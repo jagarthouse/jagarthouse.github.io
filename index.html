@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jag Manalang</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">JAGARTHOUSE</div>
+            <!-- <ul>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul> -->
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="video-container">
+                <!--
+                  To use GIFs:
+                  1. Convert your videos to GIFs (you can use online tools like ezgif.com, giphy.com, or ffmpeg).
+                  2. Place the GIF files in the videos/ folder.
+                  3. Update the src attributes below with your GIF filenames.
+                -->
+                <img id="film-gif" src="videos/htlyc_demo3.gif" alt="Film Demo">
+            </div>
+            <div class="overlay"></div>
+            
+            <div class="films-container">
+                <div class="film-content active" data-gif="videos/film1.gif">
+                    <h1 class="film-title">Demo</h1>
+                    <p class="film-description">Film description goes here. This text will be responsive to scroll.</p>
+                </div>
+                
+                <div class="film-content next" data-gif="videos/film2.gif">
+                    <h1 class="film-title">Film 2</h1>
+                    <p class="film-description">Description for the second film. Add your own content here.</p>
+                </div>
+                
+                <div class="film-content" data-gif="videos/film3.gif">
+                    <h1 class="film-title">Film 3</h1>
+                    <p class="film-description">Description for the third film. Add your own content here.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p> 2025, Jag Manalang.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const gif = document.getElementById('film-gif');
+            const filmContents = document.querySelectorAll('.film-content');
+            let currentIndex = 0;
+            let isScrolling = false;
+
+            // Function to update content
+            function updateContent(index) {
+                if (isScrolling) return;
+                isScrolling = true;
+
+                // Remove active and next classes from all contents
+                filmContents.forEach(content => {
+                    content.classList.remove('active', 'next');
+                });
+                
+                // Add active class to current content
+                filmContents[index].classList.add('active');
+                
+                // Add next class to the next content if it exists
+                if (index < filmContents.length - 1) {
+                    filmContents[index + 1].classList.add('next');
+                }
+                
+                // Update gif source
+                const newGifSrc = filmContents[index].dataset.gif;
+                if (gif.src !== newGifSrc) {
+                    gif.src = newGifSrc;
+                }
+
+                // Reset scrolling flag after animation
+                setTimeout(() => {
+                    isScrolling = false;
+                }, 1000);
+            }
+
+            // Handle scroll events
+            let scrollTimeout;
+            window.addEventListener('wheel', function(e) {
+                e.preventDefault();
+                
+                if (isScrolling) return;
+
+                if (e.deltaY > 0 && currentIndex < filmContents.length - 1) {
+                    // Scrolling down
+                    currentIndex++;
+                    updateContent(currentIndex);
+                } else if (e.deltaY < 0 && currentIndex > 0) {
+                    // Scrolling up
+                    currentIndex--;
+                    updateContent(currentIndex);
+                }
+            }, { passive: false });
+
+            // Prevent default scroll behavior
+            window.addEventListener('scroll', function(e) {
+                e.preventDefault();
+                window.scrollTo(0, 0);
+            }, { passive: false });
+        });
+    </script>
+</body>
+</html> 
