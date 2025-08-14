@@ -313,3 +313,18 @@ footer {
         font-size: 1.4rem;
     }
 } 
+
+#film-gif {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.5s ease-in-out;
+}
+
+#film-gif.loading {
+    opacity: 0.7;
+}
+
+#film-gif.loaded {
+    opacity: 1;
+} 

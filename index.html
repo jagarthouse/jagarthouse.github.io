@@ -31,15 +31,15 @@
             <div class="overlay"></div>
             
             <div class="films-container">
-                <div class="film-content active" data-src="videos/film1.gif">
+                <div class="film-content active" data-src="videos/film1.gif" data-thumbnail="videos/film1.png">
                     <h1 class="film-title">NORTH VALLEY</h1>
                     <!-- <p class="film-description">Film description goes here. This text will be responsive to scroll.</p> -->
                 </div>
                 
-                <div class="film-content next" data-src="videos/film2.gif">
+                <div class="film-content next" data-src="videos/film2.gif" data-thumbnail="videos/film2.png">
                     <h1 class="film-title">POSTCARDS OF SF</h1>
                 </div>
-                <div class="film-content" data-src="videos/comingsoon.jpg">
+                <div class="film-content" data-src="videos/comingsoon.jpg" data-thumbnail="videos/comingsoon.jpg">
                     <div class="coming-soon-container">
                         <h1 class="coming-soon-title">Coming Soon™</h1>
                     </div>
@@ -58,8 +58,31 @@
             const filmContents = document.querySelectorAll('.film-content');
             let currentIndex = 0;
             let isScrolling = false;
+            
+            // Preload thumbnails for instant display
+            const thumbnailCache = {};
+            const fullImageCache = {};
+            
+            filmContents.forEach(content => {
+                const thumbnailSrc = content.dataset.thumbnail;
+                const fullSrc = content.dataset.src;
+                
+                // Preload thumbnail
+                if (thumbnailSrc && !thumbnailCache[thumbnailSrc]) {
+                    const thumbImg = new Image();
+                    thumbImg.src = thumbnailSrc;
+                    thumbnailCache[thumbnailSrc] = thumbImg;
+                }
+                
+                // Preload full image
+                if (fullSrc && !fullImageCache[fullSrc]) {
+                    const fullImg = new Image();
+                    fullImg.src = fullSrc;
+                    fullImageCache[fullSrc] = fullImg;
+                }
+            });
 
-            // Function to update content
+            // Function to update content with thumbnail-first loading
             function updateContent(index) {
                 if (isScrolling) return;
                 isScrolling = true;
@@ -77,10 +100,31 @@
                     filmContents[index + 1].classList.add('next');
                 }
                 
-                // Update image source - now supports any image format
-                const newSrc = filmContents[index].dataset.src;
-                if (imageElement && newSrc && imageElement.src !== newSrc) {
-                    imageElement.src = newSrc;
+                // Get thumbnail and full image sources
+                const thumbnailSrc = filmContents[index].dataset.thumbnail;
+                const fullSrc = filmContents[index].dataset.src;
+                
+                if (imageElement && thumbnailSrc && fullSrc) {
+                    // First, show thumbnail instantly
+                    imageElement.classList.add('loading');
+                    imageElement.src = thumbnailSrc;
+                    
+                    // Then load full image with transition
+                    setTimeout(() => {
+                        if (fullImageCache[fullSrc]) {
+                            // Full image is already cached, switch immediately
+                            imageElement.src = fullSrc;
+                            imageElement.classList.remove('loading');
+                            imageElement.classList.add('loaded');
+                        } else {
+                            // Load full image
+                            imageElement.onload = function() {
+                                imageElement.classList.remove('loading');
+                                imageElement.classList.add('loaded');
+                            };
+                            imageElement.src = fullSrc;
+                        }
+                    }, 100); // Small delay to ensure thumbnail is visible
                 }
 
                 // Reset scrolling flag after animation
@@ -88,6 +132,37 @@
                     isScrolling = false;
                 }, 1000);
             }
+
+            // Initial load - show first thumbnail then full image
+            function initialLoad() {
+                const firstContent = filmContents[0];
+                const thumbnailSrc = firstContent.dataset.thumbnail;
+                const fullSrc = firstContent.dataset.src;
+                
+                if (imageElement && thumbnailSrc && fullSrc) {
+                    // Show thumbnail first
+                    imageElement.classList.add('loading');
+                    imageElement.src = thumbnailSrc;
+                    
+                    // Load full image
+                    setTimeout(() => {
+                        if (fullImageCache[fullSrc]) {
+                            imageElement.src = fullSrc;
+                            imageElement.classList.remove('loading');
+                            imageElement.classList.add('loaded');
+                        } else {
+                            imageElement.onload = function() {
+                                imageElement.classList.remove('loading');
+                                imageElement.classList.add('loaded');
+                            };
+                            imageElement.src = fullSrc;
+                        }
+                    }, 200);
+                }
+            }
+            
+            // Start initial load
+            initialLoad();
 
             // Handle scroll events
             let scrollTimeout;
