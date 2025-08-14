@@ -59,43 +59,154 @@
             let currentIndex = 0;
             let isScrolling = false;
             
-            // Preload thumbnails for instant display
+            // Priority-based loading system
+            const loadingQueue = {
+                thumbnails: [], // High priority - load immediately
+                visibleImages: [], // Medium priority - load when visible
+                backgroundImages: [] // Low priority - load in background
+            };
+            
             const thumbnailCache = {};
             const fullImageCache = {};
+            let isThumbnailsLoaded = false;
             
-            filmContents.forEach(content => {
-                const thumbnailSrc = content.dataset.thumbnail;
-                const fullSrc = content.dataset.src;
+            // Initialize loading queue
+            function initializeLoadingQueue() {
+                filmContents.forEach((content, index) => {
+                    const thumbnailSrc = content.dataset.thumbnail;
+                    const fullSrc = content.dataset.src;
+                    
+                    // Add thumbnails to high priority queue
+                    if (thumbnailSrc) {
+                        loadingQueue.thumbnails.push({
+                            src: thumbnailSrc,
+                            index: index,
+                            priority: 'high'
+                        });
+                    }
+                    
+                    // Add full images to appropriate queues
+                    if (fullSrc) {
+                        if (index === 0) {
+                            // First image - load immediately after thumbnails
+                            loadingQueue.visibleImages.push({
+                                src: fullSrc,
+                                index: index,
+                                priority: 'medium'
+                            });
+                        } else {
+                            // Other images - load in background
+                            loadingQueue.backgroundImages.push({
+                                src: fullSrc,
+                                index: index,
+                                priority: 'low'
+                            });
+                        }
+                    }
+                });
+            }
+            
+            // Load thumbnails first (highest priority)
+            async function loadThumbnails() {
+                console.log('Loading thumbnails...');
+                const thumbnailPromises = loadingQueue.thumbnails.map(item => {
+                    return new Promise((resolve, reject) => {
+                        const img = new Image();
+                        img.onload = () => {
+                            thumbnailCache[item.src] = img;
+                            console.log('Thumbnail loaded:', item.src);
+                            resolve(item);
+                        };
+                        img.onerror = () => {
+                            console.warn('Thumbnail failed:', item.src);
+                            thumbnailCache[item.src] = null;
+                            resolve(item); // Resolve anyway to continue
+                        };
+                        img.src = item.src;
+                    });
+                });
                 
-                // Preload thumbnail
-                if (thumbnailSrc && !thumbnailCache[thumbnailSrc]) {
-                    const thumbImg = new Image();
-                    thumbImg.onload = function() {
-                        thumbnailCache[thumbnailSrc] = thumbImg;
-                        console.log('Thumbnail loaded:', thumbnailSrc);
-                    };
-                    thumbImg.onerror = function() {
-                        console.warn('Failed to load thumbnail:', thumbnailSrc);
-                        // Fallback to full image if thumbnail fails
-                        thumbnailCache[thumbnailSrc] = null;
-                    };
-                    thumbImg.src = thumbnailSrc;
-                }
+                await Promise.all(thumbnailPromises);
+                isThumbnailsLoaded = true;
+                console.log('All thumbnails loaded');
                 
-                // Preload full image
-                if (fullSrc && !fullImageCache[fullSrc]) {
-                    const fullImg = new Image();
-                    fullImg.onload = function() {
-                        fullImageCache[fullSrc] = fullImg;
-                        console.log('Full image loaded:', fullSrc);
-                    };
-                    fullImg.onerror = function() {
-                        console.error('Failed to load full image:', fullSrc);
-                        fullImageCache[fullSrc] = null;
-                    };
-                    fullImg.src = fullSrc;
+                // Start loading visible images
+                loadVisibleImages();
+            }
+            
+            // Load images that are currently visible or likely to be seen soon
+            async function loadVisibleImages() {
+                console.log('Loading visible images...');
+                const visiblePromises = loadingQueue.visibleImages.map(item => {
+                    return new Promise((resolve, reject) => {
+                        const img = new Image();
+                        img.onload = () => {
+                            fullImageCache[item.src] = img;
+                            console.log('Visible image loaded:', item.src);
+                            resolve(item);
+                        };
+                        img.onerror = () => {
+                            console.warn('Visible image failed:', item.src);
+                            fullImageCache[item.src] = null;
+                            resolve(item);
+                        };
+                        img.src = item.src;
+                    });
+                });
+                
+                await Promise.all(visiblePromises);
+                console.log('Visible images loaded');
+                
+                // Start background loading
+                loadBackgroundImages();
+            }
+            
+            // Load background images with lower priority
+            async function loadBackgroundImages() {
+                console.log('Loading background images...');
+                // Load background images one at a time to avoid overwhelming the connection
+                for (const item of loadingQueue.backgroundImages) {
+                    await new Promise((resolve) => {
+                        const img = new Image();
+                        img.onload = () => {
+                            fullImageCache[item.src] = img;
+                            console.log('Background image loaded:', item.src);
+                            resolve();
+                        };
+                        img.onerror = () => {
+                            console.warn('Background image failed:', item.src);
+                            fullImageCache[item.src] = null;
+                            resolve();
+                        };
+                        img.src = item.src;
+                        
+                        // Add small delay between loads to be gentle on the connection
+                        setTimeout(resolve, 100);
+                    });
                 }
-            });
+                console.log('All background images loaded');
+            }
+            
+            // Initialize and start loading
+            initializeLoadingQueue();
+            loadThumbnails();
+            
+            // Add loading indicator
+            function showLoadingProgress() {
+                const totalImages = loadingQueue.thumbnails.length + loadingQueue.visibleImages.length + loadingQueue.backgroundImages.length;
+                const loadedImages = Object.keys(thumbnailCache).length + Object.keys(fullImageCache).length;
+                const progress = Math.round((loadedImages / totalImages) * 100);
+                
+                console.log(`Loading progress: ${progress}% (${loadedImages}/${totalImages})`);
+                
+                // You can add a visual progress bar here if desired
+                if (progress < 100) {
+                    setTimeout(showLoadingProgress, 500);
+                }
+            }
+            
+            // Start progress monitoring
+            setTimeout(showLoadingProgress, 1000);
 
             // Function to update content with thumbnail-first loading
             function updateContent(index) {
@@ -120,10 +231,9 @@
                 const fullSrc = filmContents[index].dataset.src;
                 
                 if (imageElement && thumbnailSrc && fullSrc) {
-                    // First, show thumbnail instantly
+                    // Always show thumbnail first for instant feedback
                     imageElement.classList.add('loading');
                     
-                    // Check if thumbnail is available, otherwise use full image
                     if (thumbnailCache[thumbnailSrc]) {
                         imageElement.src = thumbnailSrc;
                     } else {
@@ -131,27 +241,30 @@
                         imageElement.src = fullSrc;
                     }
                     
-                    // Then load full image with transition
-                    setTimeout(() => {
-                        if (fullImageCache[fullSrc]) {
-                            // Full image is already cached, switch immediately
+                    // Check if full image is ready
+                    if (fullImageCache[fullSrc]) {
+                        // Full image is cached, switch immediately
+                        setTimeout(() => {
                             imageElement.src = fullSrc;
                             imageElement.classList.remove('loading');
                             imageElement.classList.add('loaded');
-                        } else {
-                            // Load full image
-                            imageElement.onload = function() {
-                                imageElement.classList.remove('loading');
-                                imageElement.classList.add('loaded');
-                            };
-                            imageElement.onerror = function() {
-                                console.error('Failed to load image:', fullSrc);
-                                imageElement.classList.remove('loading');
-                                imageElement.classList.add('loaded');
-                            };
+                        }, 150);
+                    } else {
+                        // Load full image on demand
+                        const img = new Image();
+                        img.onload = () => {
+                            fullImageCache[fullSrc] = img;
                             imageElement.src = fullSrc;
-                        }
-                    }, 100); // Small delay to ensure thumbnail is visible
+                            imageElement.classList.remove('loading');
+                            imageElement.classList.add('loaded');
+                        };
+                        img.onerror = () => {
+                            console.error('Failed to load image:', fullSrc);
+                            imageElement.classList.remove('loading');
+                            imageElement.classList.add('loaded');
+                        };
+                        img.src = fullSrc;
+                    }
                 }
 
                 // Reset scrolling flag after animation
@@ -170,7 +283,6 @@
                     // Show thumbnail first
                     imageElement.classList.add('loading');
                     
-                    // Check if thumbnail is available, otherwise use full image
                     if (thumbnailCache[thumbnailSrc]) {
                         imageElement.src = thumbnailSrc;
                     } else {
@@ -178,25 +290,35 @@
                         imageElement.src = fullSrc;
                     }
                     
-                    // Load full image
-                    setTimeout(() => {
+                    // Wait for thumbnails to load, then show full image
+                    const checkAndLoad = () => {
                         if (fullImageCache[fullSrc]) {
                             imageElement.src = fullSrc;
                             imageElement.classList.remove('loading');
                             imageElement.classList.add('loaded');
+                        } else if (isThumbnailsLoaded) {
+                            // Thumbnails are loaded but full image isn't ready yet
+                            // Load it on demand
+                            const img = new Image();
+                            img.onload = () => {
+                                fullImageCache[fullSrc] = img;
+                                imageElement.src = fullSrc;
+                                imageElement.classList.remove('loading');
+                                imageElement.classList.add('loaded');
+                            };
+                            img.onerror = () => {
+                                console.error('Failed to load initial image:', fullSrc);
+                                imageElement.classList.remove('loading');
+                                imageElement.classList.add('loaded');
+                            };
+                            img.src = fullSrc;
                         } else {
-                            imageElement.onload = function() {
-                                imageElement.classList.remove('loading');
-                                imageElement.classList.add('loaded');
-                            };
-                            imageElement.onerror = function() {
-                                console.error('Failed to load image:', fullSrc);
-                                imageElement.classList.remove('loading');
-                                imageElement.classList.add('loaded');
-                            };
-                            imageElement.src = fullSrc;
+                            // Still loading thumbnails, check again in a bit
+                            setTimeout(checkAndLoad, 100);
                         }
-                    }, 200);
+                    };
+                    
+                    checkAndLoad();
                 }
             }
             
