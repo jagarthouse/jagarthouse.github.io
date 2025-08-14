@@ -31,12 +31,12 @@
             <div class="overlay"></div>
             
             <div class="films-container">
-                <div class="film-content active" data-src="videos/film1.gif" data-thumbnail="videos/film1.png">
+                <div class="film-content active" data-src="videos/film1.gif" data-thumbnail="videos/film1.gif">
                     <h1 class="film-title">NORTH VALLEY</h1>
                     <!-- <p class="film-description">Film description goes here. This text will be responsive to scroll.</p> -->
                 </div>
                 
-                <div class="film-content next" data-src="videos/film2.gif" data-thumbnail="videos/film2.png">
+                <div class="film-content next" data-src="videos/film2.gif" data-thumbnail="videos/film2.gif">
                     <h1 class="film-title">POSTCARDS OF SF</h1>
                 </div>
                 <div class="film-content" data-src="videos/comingsoon.jpg" data-thumbnail="videos/comingsoon.jpg">
@@ -70,15 +70,30 @@
                 // Preload thumbnail
                 if (thumbnailSrc && !thumbnailCache[thumbnailSrc]) {
                     const thumbImg = new Image();
+                    thumbImg.onload = function() {
+                        thumbnailCache[thumbnailSrc] = thumbImg;
+                        console.log('Thumbnail loaded:', thumbnailSrc);
+                    };
+                    thumbImg.onerror = function() {
+                        console.warn('Failed to load thumbnail:', thumbnailSrc);
+                        // Fallback to full image if thumbnail fails
+                        thumbnailCache[thumbnailSrc] = null;
+                    };
                     thumbImg.src = thumbnailSrc;
-                    thumbnailCache[thumbnailSrc] = thumbImg;
                 }
                 
                 // Preload full image
                 if (fullSrc && !fullImageCache[fullSrc]) {
                     const fullImg = new Image();
+                    fullImg.onload = function() {
+                        fullImageCache[fullSrc] = fullImg;
+                        console.log('Full image loaded:', fullSrc);
+                    };
+                    fullImg.onerror = function() {
+                        console.error('Failed to load full image:', fullSrc);
+                        fullImageCache[fullSrc] = null;
+                    };
                     fullImg.src = fullSrc;
-                    fullImageCache[fullSrc] = fullImg;
                 }
             });
 
@@ -107,7 +122,14 @@
                 if (imageElement && thumbnailSrc && fullSrc) {
                     // First, show thumbnail instantly
                     imageElement.classList.add('loading');
-                    imageElement.src = thumbnailSrc;
+                    
+                    // Check if thumbnail is available, otherwise use full image
+                    if (thumbnailCache[thumbnailSrc]) {
+                        imageElement.src = thumbnailSrc;
+                    } else {
+                        // Fallback to full image if thumbnail failed
+                        imageElement.src = fullSrc;
+                    }
                     
                     // Then load full image with transition
                     setTimeout(() => {
@@ -119,6 +141,11 @@
                         } else {
                             // Load full image
                             imageElement.onload = function() {
+                                imageElement.classList.remove('loading');
+                                imageElement.classList.add('loaded');
+                            };
+                            imageElement.onerror = function() {
+                                console.error('Failed to load image:', fullSrc);
                                 imageElement.classList.remove('loading');
                                 imageElement.classList.add('loaded');
                             };
@@ -142,7 +169,14 @@
                 if (imageElement && thumbnailSrc && fullSrc) {
                     // Show thumbnail first
                     imageElement.classList.add('loading');
-                    imageElement.src = thumbnailSrc;
+                    
+                    // Check if thumbnail is available, otherwise use full image
+                    if (thumbnailCache[thumbnailSrc]) {
+                        imageElement.src = thumbnailSrc;
+                    } else {
+                        // Fallback to full image if thumbnail failed
+                        imageElement.src = fullSrc;
+                    }
                     
                     // Load full image
                     setTimeout(() => {
@@ -155,6 +189,11 @@
                                 imageElement.classList.remove('loading');
                                 imageElement.classList.add('loaded');
                             };
+                            imageElement.onerror = function() {
+                                console.error('Failed to load image:', fullSrc);
+                                imageElement.classList.remove('loading');
+                                imageElement.classList.add('loaded');
+                            };
                             imageElement.src = fullSrc;
                         }
                     }, 200);
@@ -164,7 +203,7 @@
             // Start initial load
             initialLoad();
 
-            // Handle scroll events
+            // Handle scroll events (desktop)
             let scrollTimeout;
             window.addEventListener('wheel', function(e) {
                 e.preventDefault();
@@ -181,6 +220,38 @@
                     updateContent(currentIndex);
                 }
             }, { passive: false });
+
+            // Handle touch events (mobile)
+            let touchStartY = 0;
+            let touchEndY = 0;
+            
+            window.addEventListener('touchstart', function(e) {
+                touchStartY = e.touches[0].clientY;
+            }, { passive: true });
+            
+            window.addEventListener('touchend', function(e) {
+                touchEndY = e.changedTouches[0].clientY;
+                handleTouchSwipe();
+            }, { passive: true });
+            
+            function handleTouchSwipe() {
+                if (isScrolling) return;
+                
+                const swipeThreshold = 50; // Minimum swipe distance
+                const swipeDistance = touchStartY - touchEndY;
+                
+                if (Math.abs(swipeDistance) > swipeThreshold) {
+                    if (swipeDistance > 0 && currentIndex < filmContents.length - 1) {
+                        // Swipe up (next)
+                        currentIndex++;
+                        updateContent(currentIndex);
+                    } else if (swipeDistance < 0 && currentIndex > 0) {
+                        // Swipe down (previous)
+                        currentIndex--;
+                        updateContent(currentIndex);
+                    }
+                }
+            }
 
             // Prevent default scroll behavior
             window.addEventListener('scroll', function(e) {

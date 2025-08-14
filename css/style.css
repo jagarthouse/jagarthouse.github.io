@@ -328,3 +328,64 @@ footer {
 #film-gif.loaded {
     opacity: 1;
 } 
+
+/* Mobile-specific improvements */
+@media (max-width: 768px) {
+    .logo {
+        font-size: 3rem;
+        margin-top: 10px;
+    }
+    
+    header {
+        padding: 1rem;
+    }
+    
+    #film-gif {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: opacity 0.5s ease-in-out;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        -webkit-touch-callout: none;
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    .film-title {
+        font-size: 2.5rem;
+        text-align: center;
+        padding: 0 1rem;
+    }
+    
+    .coming-soon-title {
+        font-size: 2rem;
+        text-align: center;
+        padding: 0 1rem;
+    }
+}
+
+/* Prevent text selection and improve touch experience */
+.film-content {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Ensure proper image loading on mobile */
+#film-gif {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.5s ease-in-out;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
+} 
