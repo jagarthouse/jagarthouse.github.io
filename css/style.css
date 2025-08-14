@@ -14,7 +14,7 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     color: #ffffff;
     background-color: #000000;
-    line-height: 1.6;`
+    line-height: 1.6;
     overflow: hidden;
     height: 100vh;
 }
@@ -37,12 +37,30 @@ nav {
     margin: 0 auto;
 }
 
+/* Add PerfectlySplendid font from the fonts directory */
+@font-face {
+    font-family: 'PerfectlySplendid';
+    src: url('../fonts/PerfectlySplendid.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Add Helvetica Neue Light font from the fonts directory */
+@font-face {
+    font-family: 'HelveticaNeueLight';
+    src: url('../fonts/HelveticaNeueLTW0545Light.otf') format('opentype');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
 .logo {
-    font-size: 1.5rem;
+    font-size: 5rem;
     font-weight: 600;
     letter-spacing: 2px;
     margin-top: 15px;
     text-align: center;
+    font-family: 'PerfectlySplendid', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
 }
 
 nav ul {
@@ -133,8 +151,9 @@ nav a:hover {
 }
 
 .film-title {
-    font-size: 4rem;
-    font-weight: 700;
+    font-family: 'HelveticaNeueLight', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    font-size: 3.5rem;
+    font-weight: 300;
     margin-bottom: 0.5rem;
     letter-spacing: 2px;
     opacity: 0;
@@ -150,17 +169,26 @@ nav a:hover {
     transition: all 0.5s ease 0.4s;
 }
 
-.film-content.active .film-title,
+.film-content.active .film-title {
+    opacity: 1;
+    transform: translateY(0);
+}
+
 .film-content.active .film-description {
     opacity: 1;
     transform: translateY(0);
 }
 
 .film-content.next .film-title {
+    font-family: 'HelveticaNeueLight', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     font-size: 1.8rem;
+    font-weight: 300;
     opacity: 0.25;
     transform: translateY(0);
     margin-bottom: 0.2rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .film-content.next .film-description {
@@ -219,6 +247,69 @@ footer {
     }
 
     .film-content.next .film-title {
+        font-size: 1.4rem;
+    }
+}
+
+/* Coming Soon Page Styles */
+.coming-soon-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    text-align: center;
+    padding: 2rem;
+}
+
+.coming-soon-title {
+    font-family: 'HelveticaNeueLight', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    font-size: 5rem;
+    font-weight: 300;
+    letter-spacing: 4px;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease 0.3s;
+    text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+}
+
+.film-content.active .coming-soon-title {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.film-content.next .coming-soon-title {
+    font-family: 'HelveticaNeueLight', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    font-size: 1.2rem;
+    font-weight: 300;
+    opacity: 0.25;
+    transform: translateY(0);
+    text-shadow: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Responsive Coming Soon */
+@media (max-width: 768px) {
+    .coming-soon-title {
+        font-size: 3.5rem;
+        letter-spacing: 2px;
+    }
+    
+    .film-content.next .coming-soon-title {
+        font-size: 1.6rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .coming-soon-title {
+        font-size: 2.8rem;
+        letter-spacing: 1px;
+    }
+    
+    .film-content.next .coming-soon-title {
         font-size: 1.4rem;
     }
 } 
