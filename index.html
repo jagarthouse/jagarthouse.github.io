@@ -109,8 +109,10 @@
             // Load thumbnails first (highest priority)
             async function loadThumbnails() {
                 console.log('Loading thumbnails...');
+                
+                // Load thumbnails with highest priority - no delays
                 const thumbnailPromises = loadingQueue.thumbnails.map(item => {
-                    return new Promise((resolve, reject) => {
+                    return new Promise((resolve) => {
                         const img = new Image();
                         img.onload = () => {
                             thumbnailCache[item.src] = img;
@@ -119,8 +121,25 @@
                         };
                         img.onerror = () => {
                             console.warn('Thumbnail failed:', item.src);
-                            thumbnailCache[item.src] = null;
-                            resolve(item); // Resolve anyway to continue
+                            // Create a fallback - use the full image as thumbnail
+                            const fullSrc = filmContents[item.index].dataset.src;
+                            if (fullSrc) {
+                                const fallbackImg = new Image();
+                                fallbackImg.onload = () => {
+                                    thumbnailCache[item.src] = fallbackImg;
+                                    console.log('Using full image as thumbnail fallback:', fullSrc);
+                                    resolve(item);
+                                };
+                                fallbackImg.onerror = () => {
+                                    console.error('Fallback also failed:', fullSrc);
+                                    thumbnailCache[item.src] = null;
+                                    resolve(item);
+                                };
+                                fallbackImg.src = fullSrc;
+                            } else {
+                                thumbnailCache[item.src] = null;
+                                resolve(item);
+                            }
                         };
                         img.src = item.src;
                     });
@@ -213,6 +232,9 @@
                 if (isScrolling) return;
                 isScrolling = true;
 
+                // Performance tracking
+                const startTime = performance.now();
+
                 // Remove active and next classes from all contents
                 filmContents.forEach(content => {
                     content.classList.remove('active', 'next');
@@ -231,39 +253,51 @@
                 const fullSrc = filmContents[index].dataset.src;
                 
                 if (imageElement && thumbnailSrc && fullSrc) {
-                    // Always show thumbnail first for instant feedback
+                    // ALWAYS show thumbnail instantly - this is the key to speed!
                     imageElement.classList.add('loading');
+                    imageElement.src = thumbnailSrc;
                     
-                    if (thumbnailCache[thumbnailSrc]) {
-                        imageElement.src = thumbnailSrc;
-                    } else {
-                        // Fallback to full image if thumbnail failed
-                        imageElement.src = fullSrc;
-                    }
+                    // Calculate and log thumbnail display speed
+                    const thumbnailTime = performance.now() - startTime;
+                    console.log(`🚀 INSTANT: Thumbnail displayed in ${thumbnailTime.toFixed(2)}ms for slide ${index + 1}`);
                     
-                    // Check if full image is ready
+                    // Now load the full image in the background without blocking
                     if (fullImageCache[fullSrc]) {
-                        // Full image is cached, switch immediately
+                        // Full image is already cached, switch to it after a brief delay
                         setTimeout(() => {
                             imageElement.src = fullSrc;
                             imageElement.classList.remove('loading');
                             imageElement.classList.add('loaded');
-                        }, 150);
+                            const totalTime = performance.now() - startTime;
+                            console.log(`✨ UPGRADED: Switched to full image in ${totalTime.toFixed(2)}ms for slide ${index + 1}`);
+                        }, 300); // Slightly longer delay for better UX
                     } else {
-                        // Load full image on demand
+                        // Load full image in background, don't wait for it
                         const img = new Image();
                         img.onload = () => {
                             fullImageCache[fullSrc] = img;
-                            imageElement.src = fullSrc;
-                            imageElement.classList.remove('loading');
-                            imageElement.classList.add('loaded');
+                            // Only switch if user is still on this slide
+                            if (currentIndex === index) {
+                                imageElement.src = fullSrc;
+                                imageElement.classList.remove('loading');
+                                imageElement.classList.add('loaded');
+                                const totalTime = performance.now() - startTime;
+                                console.log(`🎯 UPGRADED: Full image loaded in ${totalTime.toFixed(2)}ms for slide ${index + 1}`);
+                            }
                         };
                         img.onerror = () => {
                             console.error('Failed to load image:', fullSrc);
-                            imageElement.classList.remove('loading');
-                            imageElement.classList.add('loaded');
+                            // Don't change the display, just log the error
                         };
                         img.src = fullSrc;
+                        
+                        // Remove loading state after a reasonable time even if full image fails
+                        setTimeout(() => {
+                            if (currentIndex === index) {
+                                imageElement.classList.remove('loading');
+                                imageElement.classList.add('loaded');
+                            }
+                        }, 1000);
                     }
                 }
 
