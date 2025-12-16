@@ -14,7 +14,7 @@ jobs:
       - name: Sync Fork
         uses: aormsby/Fork-Sync-With-Upstream-action@v1.0.0
         with:
-          upstream_sync_repo: 'ORIGINAL-OWNER/ORIGINAL-REPOSITORY'
+          upstream_sync_repo: 'Kenneth-Ross/jagarthouse.github.io'
           upstream_sync_branch: 'main'
           target_branch: 'main'
           github_token: ${{ secrets.GITHUB_TOKEN }}
