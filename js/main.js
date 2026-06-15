@@ -277,6 +277,14 @@ document.addEventListener('DOMContentLoaded', function() {
         if (index < filmContents.length - 1) {
             filmContents[index + 1].classList.add('next');
         }
+
+        // Send custom event to Google Analytics when a user views a slide
+        if (typeof gtag === 'function') {
+            gtag('event', 'view_film', {
+                'film_title': films[index].title,
+                'slide_index': index + 1
+            });
+        }
         
         // Get thumbnail and full image sources
         const thumbnailSrc = filmContents[index].dataset.thumbnail;
@@ -382,6 +390,14 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             posterElement.style.opacity = '1';
             videoElement.classList.remove('playing');
+
+            // Send custom event to Google Analytics for the initial slide view
+            if (typeof gtag === 'function') {
+                gtag('event', 'view_film', {
+                    'film_title': films[0].title,
+                    'slide_index': 1
+                });
+            }
             
             const checkAndLoad = () => {
                 const isCached = isVideo ? mediaCache[fullSrc] : mediaCache[fullSrc];
