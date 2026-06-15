@@ -176,7 +176,7 @@ nav a:hover {
 .film-content {
     position: absolute;
     left: 5%;
-    max-width: 600px;
+    max-width: 900px;
     opacity: 0;
     transform: translateY(20px) scale(0.9);
     transition: all 0.5s ease;
@@ -202,7 +202,7 @@ nav a:hover {
     font-size: clamp(3rem, 5.5vw, 6rem);
     font-weight: 900;
     margin-bottom: 0.5rem;
-    letter-spacing: -0.5px;
+    letter-spacing: 4px;
     opacity: 0;
     transform: translateY(20px);
     transition: all 0.5s ease 0.2s;
