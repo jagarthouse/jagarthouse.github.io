@@ -569,4 +569,304 @@ footer {
 .drawer-link:hover {
     transform: translateX(10px);
     opacity: 0.7;
+}
+
+/* Page Routing and Sub-Views */
+.view {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.view.active {
+    display: block;
+    opacity: 1;
+}
+
+#projects-view.view.active {
+    display: block; /* Custom hero styling takes care of this */
+}
+
+/* Sub-page Containers (All Films, About, Contact) */
+#all-films-view,
+#about-view,
+#contact-view {
+    min-height: 100vh;
+    min-height: 100dvh;
+    background-color: #000000;
+    box-sizing: border-box;
+    padding: 12rem 4vw 6rem 4vw;
+}
+
+@media (max-width: 768px) {
+    #all-films-view,
+    #about-view,
+    #contact-view {
+        padding: 8rem 2rem 4rem 2rem;
+    }
+}
+
+/* Stark Typographic Hierarchy */
+.page-title {
+    font-family: 'PerfectlySplendid', serif;
+    font-size: clamp(3rem, 6vw, 6rem);
+    font-weight: normal;
+    color: #ffffff;
+    letter-spacing: -1px;
+    margin: 0;
+    line-height: 1;
+    text-transform: uppercase;
+}
+
+.stylized-a {
+    position: relative;
+    display: inline-block;
+}
+
+.stylized-a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    width: 100%;
+    height: 4px;
+    background-color: #ffffff;
+}
+
+/* All Films Container & Header */
+.all-films-container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.all-films-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 4rem;
+    border-bottom: 1px solid #1a1a1a;
+    padding-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+    .all-films-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+        padding-bottom: 1.5rem;
+    }
+}
+
+/* Micro-Utility Navigation */
+.sort-navigation {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    font-family: 'HelveticaNeueLight', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+}
+
+.sort-label {
+    color: #555555;
+    font-weight: 300;
+}
+
+.sort-btn {
+    background: none;
+    border: none;
+    color: #666666;
+    cursor: pointer;
+    padding: 0;
+    font-size: inherit;
+    letter-spacing: inherit;
+    font-family: inherit;
+    text-transform: uppercase;
+    transition: color 0.3s ease, border-color 0.3s ease;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 2px;
+}
+
+.sort-btn:hover {
+    color: #ffffff;
+}
+
+.sort-btn.is-active {
+    color: #ffffff;
+    font-weight: normal;
+    border-bottom: 1px solid #ffffff;
+}
+
+/* Asymmetrical Masonry Grid */
+.all-films-grid {
+    column-count: 3;
+    column-gap: 3.5rem;
+    width: 100%;
+}
+
+@media (max-width: 1024px) {
+    .all-films-grid {
+        column-count: 2;
+        column-gap: 2.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .all-films-grid {
+        column-count: 1;
+        column-gap: 0;
+    }
+}
+
+/* Imagery-First Content Cards */
+.film-card {
+    break-inside: avoid;
+    margin-bottom: 4.5rem;
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+.film-card-image-wrapper {
+    width: 100%;
+    overflow: hidden;
+    background-color: #0d0d0d;
+}
+
+.film-card img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.7s cubic-bezier(0.25, 1, 0.5, 1), filter 0.7s ease;
+}
+
+.film-card:hover img {
+    transform: scale(1.025);
+    filter: brightness(1.05);
+}
+
+.film-card-info {
+    margin-top: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.film-card-year {
+    font-family: 'HelveticaNeueLight', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 0.7rem;
+    font-weight: 300;
+    color: #666666;
+    letter-spacing: 2px;
+}
+
+.film-card-title {
+    font-family: 'HelveticaNeueLight', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 1.05rem;
+    font-weight: 300;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* About Me Page Styling */
+.about-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.about-content {
+    margin-top: 4rem;
+    font-family: 'HelveticaNeueLight', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 1.25rem;
+    line-height: 1.9;
+    color: #999999;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.about-content .lead-text {
+    font-size: 1.8rem;
+    line-height: 1.5;
+    color: #ffffff;
+    font-weight: 300;
+}
+
+@media (max-width: 768px) {
+    .about-content {
+        margin-top: 3rem;
+        font-size: 1.1rem;
+        gap: 1.5rem;
+    }
+    .about-content .lead-text {
+        font-size: 1.4rem;
+    }
+}
+
+/* Contact Page Styling */
+.contact-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.contact-content {
+    margin-top: 4rem;
+    font-family: 'HelveticaNeueLight', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 1.25rem;
+    color: #999999;
+    display: flex;
+    flex-direction: column;
+    gap: 3.5rem;
+}
+
+.contact-email {
+    font-size: clamp(2rem, 5vw, 4.5rem);
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 300;
+    display: inline-block;
+    transition: color 0.3s ease, transform 0.3s ease;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 12px;
+    width: fit-content;
+}
+
+.contact-email:hover {
+    color: #888888;
+    border-bottom-color: #ffffff;
+    transform: translateX(5px);
+}
+
+.social-links {
+    display: flex;
+    gap: 2.5rem;
+    margin-top: 1rem;
+}
+
+.social-links a {
+    color: #555555;
+    text-decoration: none;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    font-weight: 300;
+    transition: color 0.3s ease;
+}
+
+.social-links a:hover {
+    color: #ffffff;
+}
+
+@media (max-width: 768px) {
+    .contact-content {
+        margin-top: 3rem;
+        gap: 2rem;
+    }
+    .social-links {
+        gap: 1.5rem;
+    }
 } 

@@ -30,8 +30,9 @@
         <nav class="drawer-nav">
             <ul class="drawer-links">
                 <li style="--index: 1;"><a href="#projects" class="drawer-link">PROJECTS</a></li>
-                <li style="--index: 2;"><a href="#about" class="drawer-link">ABOUT ME</a></li>
-                <li style="--index: 3;"><a href="#contact" class="drawer-link">CONTACT</a></li>
+                <li style="--index: 2;"><a href="#all-films" class="drawer-link">ALL FILMS</a></li>
+                <li style="--index: 3;"><a href="#about" class="drawer-link">ABOUT ME</a></li>
+                <li style="--index: 4;"><a href="#contact" class="drawer-link">CONTACT</a></li>
             </ul>
         </nav>
     </div>
@@ -47,7 +48,8 @@
     </header>
 
     <main>
-        <section class="hero">
+        <!-- Slideshow/Hero Section (Projects View) -->
+        <section id="projects-view" class="hero view active">
             <div class="video-container">
                 <img id="film-poster" src="videos/CKK_party.webp" alt="loading..">
                 <video id="film-video" autoplay loop muted playsinline></video>
@@ -56,6 +58,49 @@
             
             <div class="films-container">
                 <!-- Film content will be dynamically injected here -->
+            </div>
+        </section>
+
+        <!-- All Films Grid Section -->
+        <section id="all-films-view" class="view">
+            <div class="all-films-container">
+                <div class="all-films-header">
+                    <h1 class="page-title"><span class="stylized-a">A</span>LL FILMS</h1>
+                    <div class="sort-navigation">
+                        <span class="sort-label">SORT BY:</span>
+                        <button class="sort-btn is-active" data-sort="newest">NEWEST</button>
+                        <button class="sort-btn" data-sort="alphabetical">A-Z</button>
+                    </div>
+                </div>
+                <div class="all-films-grid">
+                    <!-- Film cards will be dynamically injected here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- About Me Section -->
+        <section id="about-view" class="view">
+            <div class="about-container">
+                <h1 class="page-title"><span class="stylized-a">A</span>BOUT ME</h1>
+                <div class="about-content">
+                    <p class="lead-text">Jag Manalang is a director, cinematographer, and visual artist specializing in cinematic storytelling, music videos, and commercial film.</p>
+                    <p>Creating visual landscapes that merge raw emotion with striking composition, his work focuses on narrative depth and bold aesthetic choices.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact-view" class="view">
+            <div class="contact-container">
+                <h1 class="page-title"><span class="stylized-a">C</span>ONTACT</h1>
+                <div class="contact-content">
+                    <p>For bookings, collaborations, or inquiries:</p>
+                    <a href="mailto:jag@jagarthouse.com" class="contact-email">jag@jagarthouse.com</a>
+                    <div class="social-links">
+                        <a href="https://instagram.com/jagarthouse" target="_blank" rel="noopener noreferrer">INSTAGRAM</a>
+                        <a href="https://vimeo.com/jagarthouse" target="_blank" rel="noopener noreferrer">VIMEO</a>
+                    </div>
+                </div>
             </div>
         </section>
     </main>

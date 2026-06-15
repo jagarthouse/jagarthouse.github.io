@@ -560,6 +560,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Handle scroll events (desktop)
     window.addEventListener('wheel', function(e) {
+        const hash = window.location.hash || '#projects';
+        if (hash !== '#projects') {
+            return; // Allow natural scrolling
+        }
         e.preventDefault();
         
         if (isScrolling) { return; } // If already scrolling, do nothing
@@ -592,6 +596,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }, { passive: true });
     
     window.addEventListener('touchend', function(e) {
+        const hash = window.location.hash || '#projects';
+        if (hash !== '#projects') {
+            return; // Allow natural swipe scrolling
+        }
+        
         touchEndY = e.changedTouches[0].clientY;
         
         if (isScrolling) { return; } // If already scrolling, do nothing
@@ -619,10 +628,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 800); // This duration should be slightly longer than your page transition animation
     }, { passive: true });
 
-    // Prevent default scroll behavior
+    // Prevent default scroll behavior only on projects slideshow
     window.addEventListener('scroll', function(e) {
-        e.preventDefault();
-        window.scrollTo(0, 0);
+        const hash = window.location.hash || '#projects';
+        if (hash === '#projects') {
+            e.preventDefault();
+            window.scrollTo(0, 0);
+        }
     }, { passive: false });
 
     // Menu Drawer Toggle Logic
@@ -657,4 +669,103 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
+
+    // --- All Films Rendering & Sorting & Page Navigation Logic ---
+    let currentSort = 'newest';
+
+    function renderAllFilmsGrid() {
+        const gridContainer = document.querySelector('.all-films-grid');
+        if (!gridContainer) return;
+        
+        gridContainer.innerHTML = '';
+        
+        // Clone films array to avoid modifying the original order
+        let filmsToRender = [...films].map((film, index) => ({...film, originalIndex: index}));
+        
+        if (currentSort === 'alphabetical') {
+            filmsToRender.sort((a, b) => a.title.localeCompare(b.title));
+        }
+        
+        filmsToRender.forEach((film) => {
+            const card = document.createElement('article');
+            card.classList.add('film-card');
+            card.dataset.index = film.originalIndex;
+            
+            // Render card content
+            card.innerHTML = `
+                <div class="film-card-image-wrapper">
+                    <img src="${film.thumbnail}" alt="${film.title}" loading="lazy">
+                </div>
+                <div class="film-card-info">
+                    <span class="film-card-year">2026</span>
+                    <h3 class="film-card-title">${film.title}</h3>
+                </div>
+            `;
+            
+            // Navigate to projects view on click, and activate this specific film
+            card.addEventListener('click', (e) => {
+                e.preventDefault();
+                currentIndex = film.originalIndex;
+                updateContent(currentIndex);
+                window.location.hash = '#projects';
+            });
+            
+            gridContainer.appendChild(card);
+        });
+    }
+
+    // Set up sort buttons
+    const sortButtons = document.querySelectorAll('.sort-btn');
+    sortButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            sortButtons.forEach(b => b.classList.remove('is-active'));
+            btn.classList.add('is-active');
+            currentSort = btn.dataset.sort;
+            renderAllFilmsGrid();
+        });
+    });
+
+    // Routing handler
+    function handleRouting() {
+        const hash = window.location.hash || '#projects';
+        
+        // Remove active class from all views
+        document.querySelectorAll('.view').forEach(view => {
+            view.classList.remove('active');
+        });
+        
+        // Scroll to top of the document
+        window.scrollTo(0, 0);
+
+        if (hash === '#projects') {
+            const projectsView = document.getElementById('projects-view');
+            if (projectsView) projectsView.classList.add('active');
+            // Resume video playback for current slide
+            if (videoElement && videoElement.classList.contains('playing')) {
+                videoElement.play().catch(e => console.warn(e));
+            }
+        } else if (hash === '#all-films') {
+            const allFilmsView = document.getElementById('all-films-view');
+            if (allFilmsView) allFilmsView.classList.add('active');
+            // Pause hero video
+            if (videoElement) videoElement.pause();
+            // Render grid
+            renderAllFilmsGrid();
+        } else if (hash === '#about') {
+            const aboutView = document.getElementById('about-view');
+            if (aboutView) aboutView.classList.add('active');
+            // Pause hero video
+            if (videoElement) videoElement.pause();
+        } else if (hash === '#contact') {
+            const contactView = document.getElementById('contact-view');
+            if (contactView) contactView.classList.add('active');
+            // Pause hero video
+            if (videoElement) videoElement.pause();
+        }
+    }
+
+    window.addEventListener('hashchange', handleRouting);
+    
+    // Run router on load
+    handleRouting();
 });
