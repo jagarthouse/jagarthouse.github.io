@@ -1,76 +1,22 @@
 document.addEventListener('DOMContentLoaded', function() {
     const films = [
         {
-            title: 'CKK PARTY',
-            thumbnail: 'videos/CKK_party.webp',
-            src: 'videos/CKK_party.webm',
-            mp4: 'videos/CKK_party.mp4'
-        },
-        {
-            title: 'UNTITLED 6',
-            thumbnail: 'videos/untitled6.webp',
-            src: 'videos/untitled6.webm',
-            mp4: 'videos/untitled6.mp4'
-        },
-        {
-            title: 'UNTITLED 7',
-            thumbnail: 'videos/untitled7.webp',
-            src: 'videos/untitled7.webm',
-            mp4: 'videos/untitled7.mp4'
-        },
-        {
-            title: 'UNTITLED 8',
-            thumbnail: 'videos/untitled8.webp',
-            src: 'videos/untitled8.webm',
-            mp4: 'videos/untitled8.mp4'
-        },
-        {
-            title: '30 PERCENT',
-            thumbnail: 'videos/30Percent_thumb.webp',
-            src: 'videos/30Percent.webp'
-        },
-        {
-            title: 'BIGGER PROBLEMS - TEYO 1',
-            thumbnail: 'videos/BiggerProblems_TeYo1_thumb.webp',
-            src: 'videos/BiggerProblems_TeYo1.webp'
-        },
-        {
-            title: 'BIGGER PROBLEMS - TEYO 2',
-            thumbnail: 'videos/BiggerProblems_TeYo2_thumb.webp',
-            src: 'videos/BiggerProblems_TeYo2.webp'
-        },
-        {
-            title: 'DIASPORA - SHORT FILM 1',
+            title: 'DIASPORA',
             thumbnail: 'videos/DIASPORA_shortfilm1_thumb.webp',
             src: 'videos/DIASPORA_shortfilm1.webp'
         },
         {
-            title: 'DIASPORA - SHORT FILM 2',
-            thumbnail: 'videos/DIASPORA_shortfilm2_thumb.webp',
-            src: 'videos/DIASPORA_shortfilm2.webp'
+            title: 'NOCTURNAL',
+            thumbnail: 'videos/NOCTURNAL1_thumb.webp',
+            src: 'videos/NOCTURNAL1.webp'
         },
         {
-            title: 'DIASPORA - SHORT FILM 3',
-            thumbnail: 'videos/DIASPORA_shortfilm3_thumb.webp',
-            src: 'videos/DIASPORA_shortfilm3.webp'
+            title: 'NOCTURNAL ',
+            thumbnail: 'videos/NOCTURNAL2_thumb.webp',
+            src: 'videos/NOCTURNAL2.webp'
         },
         {
-            title: 'DIASPORA - PREVIS',
-            thumbnail: 'videos/Diaspora_PreVis_thumb.webp',
-            src: 'videos/Diaspora_PreVis.webp'
-        },
-        {
-            title: 'DIASPORA - PROMO',
-            thumbnail: 'videos/Diaspora_Promo_thumb.webp',
-            src: 'videos/Diaspora_Promo.webp'
-        },
-        {
-            title: 'DOWN IN LA',
-            thumbnail: 'videos/DowninLA_thumb.webp',
-            src: 'videos/DowninLA.webp'
-        },
-        {
-            title: 'GIRLS IN LA',
+            title: 'PINKWALL',
             thumbnail: 'videos/GirlsInLA_thumb.webp',
             src: 'videos/GirlsInLA.webp'
         },
@@ -79,70 +25,131 @@ document.addEventListener('DOMContentLoaded', function() {
             thumbnail: 'videos/KillerServe_thumb.webp',
             src: 'videos/KillerServe.webp'
         },
+
         {
-            title: 'MARADO - BAD MV 1',
+            title: 'BIGGER PROBLEMS',
+            thumbnail: 'videos/BiggerProblems_TeYo1_thumb.webp',
+            src: 'videos/BiggerProblems_TeYo1.webp'
+        },
+
+        {
+            title: 'HALLOWEEKEND',
+            thumbnail: 'videos/CKK_party.webp',
+            src: 'videos/CKK_party.webm',
+            mp4: 'videos/CKK_party.mp4'
+        },
+        {
+            title: 'MAGNOLIA',
+            thumbnail: 'videos/untitled8.webp',
+            src: 'videos/untitled8.webm',
+            mp4: 'videos/untitled8.mp4'
+        },
+        {
+            title: 'NEW NUISANCE',
+            thumbnail: 'videos/untitled5_thumb.webp',
+            src: 'videos/untitled5.webp'
+        },
+        {
+            title: 'BAD',
             thumbnail: 'videos/Marado_BAD_mv1_thumb.webp',
             src: 'videos/Marado_BAD_mv1.webp'
         },
         {
-            title: 'MARADO - BAD MV 2',
+            title: 'BAD ',
             thumbnail: 'videos/Marado_BAD_mv2_thumb.webp',
             src: 'videos/Marado_BAD_mv2.webp'
         },
         {
-            title: 'MARADO - MV TEST',
-            thumbnail: 'videos/Marado_MV_test_thumb.webp',
-            src: 'videos/Marado_MV_test.webp'
+            title: 'DOWN IN LA',
+            thumbnail: 'videos/DowninLA_thumb.webp',
+            src: 'videos/DowninLA.webp'
         },
         {
-            title: 'NOCTURNAL 1',
-            thumbnail: 'videos/NOCTURNAL1_thumb.webp',
-            src: 'videos/NOCTURNAL1.webp'
+            title: 'SANTA SUSANA',
+            thumbnail: 'videos/untitled7.webp',
+            src: 'videos/untitled7.webm',
+            mp4: 'videos/untitled7.mp4'
         },
         {
-            title: 'NOCTURNAL 2',
-            thumbnail: 'videos/NOCTURNAL2_thumb.webp',
-            src: 'videos/NOCTURNAL2.webp'
+            title: 'HEIGHTS of MARINA',
+            thumbnail: 'videos/Diaspora_Promo_thumb.webp',
+            src: 'videos/Diaspora_Promo.webp'
         },
+
+
         {
             title: 'OLDIES BUT GOLDIES',
             thumbnail: 'videos/OldiesButGoldies_thumb.webp',
             src: 'videos/OldiesButGoldies.webp'
         },
         {
+            title: 'MARADO PreVis',
+            thumbnail: 'videos/Marado_MV_test_thumb.webp',
+            src: 'videos/Marado_MV_test.webp'
+        },
+        {
+            title: 'DIASPORA PreVis',
+            thumbnail: 'videos/Diaspora_PreVis_thumb.webp',
+            src: 'videos/Diaspora_PreVis.webp'
+        },
+
+        {
             title: 'SIMILIS',
             thumbnail: 'videos/SIMILIS_thumb.webp',
             src: 'videos/SIMILIS.webp'
         },
         {
-            title: 'YALA - SPEC AD',
+            title: 'YALA Spec Ad',
             thumbnail: 'videos/yala_specad_thumb.webp',
             src: 'videos/yala_specad.webp'
         },
         {
-            title: 'UNTITLED 1',
+            title: 'CALL ME WHEN YOU CAN',
             thumbnail: 'videos/untitled1_thumb.webp',
             src: 'videos/untitled1.webp'
         },
         {
-            title: 'UNTITLED 2',
+            title: 'YERBA ISLE',
             thumbnail: 'videos/untitled2_thumb.webp',
             src: 'videos/untitled2.webp'
         },
         {
-            title: 'UNTITLED 3',
+            title: 'SAY, DELILAH',
             thumbnail: 'videos/untitled3_thumb.webp',
             src: 'videos/untitled3.webp'
         },
         {
-            title: 'UNTITLED 4',
+            title: 'JAY SOMBER of WHITHER',
             thumbnail: 'videos/untitled4_thumb.webp',
             src: 'videos/untitled4.webp'
         },
         {
-            title: 'UNTITLED 5',
-            thumbnail: 'videos/untitled5_thumb.webp',
-            src: 'videos/untitled5.webp'
+            title: 'BIGGER PROBLEMS ',
+            thumbnail: 'videos/BiggerProblems_TeYo2_thumb.webp',
+            src: 'videos/BiggerProblems_TeYo2.webp'
+        },  
+        {
+            title: 'DIASPORA ',
+            thumbnail: 'videos/DIASPORA_shortfilm2_thumb.webp',
+            src: 'videos/DIASPORA_shortfilm2.webp'
+        }, 
+        {
+            title: 'DIASPORA  ',
+            thumbnail: 'videos/DIASPORA_shortfilm3_thumb.webp',
+            src: 'videos/DIASPORA_shortfilm3.webp'
+        },
+
+
+        {
+            title: 'LOVE STORY ON THE PIER',
+            thumbnail: 'videos/untitled6.webp',
+            src: 'videos/untitled6.webm',
+            mp4: 'videos/untitled6.mp4'
+        },
+        {
+            title: '30 PERCENT',
+            thumbnail: 'videos/30Percent_thumb.webp',
+            src: 'videos/30Percent.webp'
         }
     ];
 
