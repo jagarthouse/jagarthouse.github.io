@@ -17,6 +17,7 @@ body {
     line-height: 1.6;
     overflow: hidden;
     height: 100vh;
+    height: 100dvh;
 }
 
 /* Header and Navigation */
@@ -86,6 +87,7 @@ nav a:hover {
     position: relative;
     width: 100%;
     height: 100vh;
+    height: 100dvh;
     overflow: hidden;
 }
 
@@ -123,6 +125,7 @@ nav a:hover {
 .films-container {
     position: relative;
     height: 100vh;
+    height: 100dvh;
     z-index: 3;
 }
 
@@ -212,19 +215,21 @@ footer {
 /* Responsive Design */
 @media (max-width: 768px) {
     .film-title {
-        font-size: 3rem;
+        font-size: 2.5rem;
     }
 
     .film-description {
-        font-size: 1.1rem;
+        font-size: 1rem;
     }
 
-    .film-content.next .film-title {
-        font-size: 1.6rem;
+    .film-content.active {
+        bottom: 5.5rem; /* Move active title and description above mobile footer */
     }
 
-    .film-content.next .film-description {
-        font-size: 0.75rem;
+    .film-content.next {
+        opacity: 0 !important;
+        visibility: hidden;
+        pointer-events: none;
     }
 
     nav {
@@ -238,16 +243,17 @@ footer {
 
 @media (max-width: 480px) {
     .film-title {
-        font-size: 2.5rem;
+        font-size: 2rem;
+    }
+
+    .film-description {
+        font-size: 0.9rem;
+        line-height: 1.4;
     }
 
     .film-content {
         left: 1rem;
         right: 1rem;
-    }
-
-    .film-content.next .film-title {
-        font-size: 1.4rem;
     }
 }
 
@@ -294,25 +300,24 @@ footer {
 /* Responsive Coming Soon */
 @media (max-width: 768px) {
     .coming-soon-title {
-        font-size: 3.5rem;
+        font-size: 3rem;
         letter-spacing: 2px;
+        white-space: normal;
     }
     
     .film-content.next .coming-soon-title {
-        font-size: 1.6rem;
+        opacity: 0 !important;
+        visibility: hidden;
+        pointer-events: none;
     }
 }
 
 @media (max-width: 480px) {
     .coming-soon-title {
-        font-size: 2.8rem;
+        font-size: 2.4rem;
         letter-spacing: 1px;
     }
-    
-    .film-content.next .coming-soon-title {
-        font-size: 1.4rem;
-    }
-} 
+}
 
 #film-poster, #film-video {
     position: absolute;

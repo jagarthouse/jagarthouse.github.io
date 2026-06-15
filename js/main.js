@@ -443,7 +443,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Handle touch events (mobile)
     let touchStartY = 0;
-;
+    let touchEndY = 0;
     
     window.addEventListener('touchstart', function(e) {
         touchStartY = e.touches[0].clientY;
