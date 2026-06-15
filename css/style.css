@@ -147,7 +147,7 @@ nav a:hover {
 }
 
 .film-content.next {
-    bottom: 5%;
+    bottom: 8.5%; /* Raised to be closer to the active title (at 12%) */
     opacity: 0.07; /* Even less opaque (more transparent, very subtle) */
     transform: translateY(0) scale(0.95); /* Even larger preview scale */
     pointer-events: none;
@@ -229,7 +229,7 @@ footer {
     .film-content.next {
         opacity: 0.07 !important; /* Make it subtle but visible on mobile */
         visibility: visible !important;
-        bottom: 3rem; /* Position it below active slide content and above footer */
+        bottom: 4.2rem; /* Raised to be closer to active content (at 5.5rem) */
         transform: translateY(0) scale(0.7); /* Scale down slightly for mobile screens */
         pointer-events: none;
     }
