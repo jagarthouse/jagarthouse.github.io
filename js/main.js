@@ -13,6 +13,12 @@ document.addEventListener('DOMContentLoaded', function() {
             mp4: 'videos/film2.mp4'
         },
         {
+            title: 'KILLER SERVE',
+            thumbnail: 'videos/killerserve.webp',
+            src: 'videos/killerserve.webm',
+            mp4: 'videos/killerserve.mp4'
+        },
+        {
             title: 'Coming Soon™',
             thumbnail: 'videos/comingsoon.jpg',
             src: 'videos/comingsoon.jpg',
