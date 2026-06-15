@@ -105,13 +105,10 @@ nav {
     text-align: center;
     font-family: 'Aguafina', cursive, sans-serif;
     text-transform: none; /* Cursive script fonts should not be forced uppercase */
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 .logo-word {
-    display: inline-block;
+    display: inline;
 }
 
 .logo-dot {
@@ -119,8 +116,8 @@ nav {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     font-size: 1.8rem;
     line-height: 1;
-    margin: 0 0.3rem; /* Positive spacing ensures dot visibility and prevents overlapping */
-    transform: translateY(-0.4rem); /* Center dot vertically relative to cursive text baseline */
+    margin: 0 0.35rem; /* Balanced horizontal spacing */
+    vertical-align: 0.22em; /* Align dot vertically relative to the baseline of cursive script */
     color: #ffffff;
     opacity: 0.9;
 }
@@ -424,8 +421,8 @@ footer {
     
     .logo-dot {
         font-size: 1.1rem;
-        margin: 0 0.15rem; /* Positive spacing ensures dot visibility on mobile */
-        transform: translateY(-0.25rem);
+        margin: 0 0.15rem;
+        vertical-align: 0.22em;
     }
     
     header {
