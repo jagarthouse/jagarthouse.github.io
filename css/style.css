@@ -41,6 +41,48 @@ header.hidden {
     transform: translateY(-120%);
 }
 
+.header-contacts {
+    position: absolute;
+    right: 2rem;
+    top: 2.2rem;
+    display: flex;
+    gap: 1.2rem;
+    align-items: center;
+    z-index: 1010;
+}
+
+.header-contact-link {
+    color: #888888;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.3s ease, transform 0.3s ease;
+    text-decoration: none;
+}
+
+.header-contact-link:hover {
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+.header-contact-link svg {
+    width: 18px;
+    height: 18px;
+    stroke: currentColor;
+}
+
+@media (max-width: 768px) {
+    .header-contacts {
+        right: 1.5rem;
+        top: 2.2rem;
+        gap: 1rem;
+    }
+    .header-contact-link svg {
+        width: 16px;
+        height: 16px;
+    }
+}
+
 nav {
     display: flex;
     justify-content: center;
