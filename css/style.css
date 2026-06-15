@@ -61,13 +61,51 @@ nav {
     font-style: normal;
     font-display: swap;
 }
+
+/* Add Aguafina font */
+@font-face {
+    font-family: 'Aguafina';
+    src: url('../fonts/Aguafina.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Add Balboa Extra Black font */
+@font-face {
+    font-family: 'BalboaExtraBlack';
+    src: url('../fonts/Balboa_ExtraBlack.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Add Balboa Extra Condensed font */
+@font-face {
+    font-family: 'BalboaExtraCondensed';
+    src: url('../fonts/Balboa_ExtraCondensed.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Add Swiss Regular font */
+@font-face {
+    font-family: 'SwissRegular';
+    src: url('../fonts/Swiss_Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
 .logo {
     font-size: 5rem;
-    font-weight: 600;
-    letter-spacing: 2px;
-    margin-top: 15px;
+    font-weight: normal;
+    letter-spacing: 1px;
+    margin-top: 10px;
     text-align: center;
-    font-family: 'PerfectlySplendid', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    font-family: 'Aguafina', cursive, sans-serif;
+    text-transform: none; /* Cursive script fonts should not be forced uppercase */
 }
 
 nav ul {
@@ -160,14 +198,15 @@ nav a:hover {
 }
 
 .film-title {
-    font-family: 'HelveticaNeueLight', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    font-size: 3.5rem;
-    font-weight: 300;
+    font-family: 'BalboaExtraBlack', Impact, sans-serif;
+    font-size: clamp(3rem, 5.5vw, 6rem);
+    font-weight: 900;
     margin-bottom: 0.5rem;
-    letter-spacing: 2px;
+    letter-spacing: -0.5px;
     opacity: 0;
     transform: translateY(20px);
     transition: all 0.5s ease 0.2s;
+    text-transform: uppercase;
 }
 
 .film-description {
@@ -189,15 +228,16 @@ nav a:hover {
 }
 
 .film-content.next .film-title {
-    font-family: 'HelveticaNeueLight', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    font-family: 'BalboaExtraCondensed', 'Arial Narrow', sans-serif;
     font-size: 2.2rem; /* Larger font size */
-    font-weight: 300;
+    font-weight: normal;
     opacity: 1; /* Inherit the parent's subtle opacity instead of multiplying */
     transform: translateY(0);
     margin-bottom: 0.2rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    text-transform: uppercase;
 }
 
 .film-content.next .film-description {
@@ -277,15 +317,16 @@ footer {
 }
 
 .coming-soon-title {
-    font-family: 'HelveticaNeueLight', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    font-size: 5rem;
-    font-weight: 300;
-    letter-spacing: 4px;
+    font-family: 'BalboaExtraBlack', Impact, sans-serif;
+    font-size: clamp(3rem, 6vw, 6rem);
+    font-weight: 900;
+    letter-spacing: -0.5px;
     white-space: nowrap;
     opacity: 0;
     transform: translateY(30px);
     transition: all 0.8s ease 0.3s;
     text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+    text-transform: uppercase;
 }
 
 .film-content.active .coming-soon-title {
@@ -294,15 +335,16 @@ footer {
 }
 
 .film-content.next .coming-soon-title {
-    font-family: 'HelveticaNeueLight', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    font-family: 'BalboaExtraCondensed', 'Arial Narrow', sans-serif;
     font-size: 1.6rem; /* Larger preview size */
-    font-weight: 300;
+    font-weight: normal;
     opacity: 1; /* Inherit parent's opacity */
     transform: translateY(0);
     text-shadow: none;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    text-transform: uppercase;
 }
 
 /* Responsive Coming Soon */
@@ -561,9 +603,9 @@ footer {
 }
 
 .drawer-link {
-    font-family: 'HelveticaNeueLight', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: 'SwissRegular', -apple-system, BlinkMacSystemFont, sans-serif;
     font-size: clamp(2rem, 3.5vw, 4rem); /* Fluid oversized typography */
-    font-weight: 300;
+    font-weight: normal;
     color: #ffffff;
     text-decoration: none;
     letter-spacing: 4px;
@@ -614,11 +656,11 @@ footer {
 
 /* Stark Typographic Hierarchy */
 .page-title {
-    font-family: 'PerfectlySplendid', serif;
+    font-family: 'BalboaExtraBlack', Impact, sans-serif;
     font-size: clamp(3rem, 6vw, 6rem);
-    font-weight: normal;
+    font-weight: 900;
     color: #ffffff;
-    letter-spacing: -1px;
+    letter-spacing: -0.5px;
     margin: 0;
     line-height: 1;
     text-transform: uppercase;
@@ -669,14 +711,14 @@ footer {
     display: flex;
     align-items: center;
     gap: 1.5rem;
-    font-family: 'HelveticaNeueLight', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: 'SwissRegular', -apple-system, BlinkMacSystemFont, sans-serif;
     font-size: 0.8rem;
     letter-spacing: 2px;
 }
 
 .sort-label {
     color: #555555;
-    font-weight: 300;
+    font-weight: normal;
 }
 
 .sort-btn {
@@ -769,14 +811,14 @@ footer {
 }
 
 .film-card-title {
-    font-family: 'HelveticaNeueLight', -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: 1.05rem;
-    font-weight: 300;
+    font-family: 'BalboaExtraCondensed', 'Arial Narrow', sans-serif;
+    font-size: 1.35rem;
+    font-weight: normal;
     color: #ffffff;
     text-transform: uppercase;
-    letter-spacing: 1.5px;
+    letter-spacing: 1px;
     margin: 0;
-    line-height: 1.4;
+    line-height: 1.2;
 }
 
 /* About Me Page Styling */
