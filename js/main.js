@@ -738,29 +738,37 @@ document.addEventListener('DOMContentLoaded', function() {
         window.scrollTo(0, 0);
 
         if (hash === '#projects') {
+            document.documentElement.classList.add('projects-active');
+            document.body.classList.add('projects-active');
+            
             const projectsView = document.getElementById('projects-view');
             if (projectsView) projectsView.classList.add('active');
             // Resume video playback for current slide
             if (videoElement && videoElement.classList.contains('playing')) {
                 videoElement.play().catch(e => console.warn(e));
             }
-        } else if (hash === '#all-films') {
-            const allFilmsView = document.getElementById('all-films-view');
-            if (allFilmsView) allFilmsView.classList.add('active');
-            // Pause hero video
-            if (videoElement) videoElement.pause();
-            // Render grid
-            renderAllFilmsGrid();
-        } else if (hash === '#about') {
-            const aboutView = document.getElementById('about-view');
-            if (aboutView) aboutView.classList.add('active');
-            // Pause hero video
-            if (videoElement) videoElement.pause();
-        } else if (hash === '#contact') {
-            const contactView = document.getElementById('contact-view');
-            if (contactView) contactView.classList.add('active');
-            // Pause hero video
-            if (videoElement) videoElement.pause();
+        } else {
+            document.documentElement.classList.remove('projects-active');
+            document.body.classList.remove('projects-active');
+            
+            if (hash === '#all-films') {
+                const allFilmsView = document.getElementById('all-films-view');
+                if (allFilmsView) allFilmsView.classList.add('active');
+                // Pause hero video
+                if (videoElement) videoElement.pause();
+                // Render grid
+                renderAllFilmsGrid();
+            } else if (hash === '#about') {
+                const aboutView = document.getElementById('about-view');
+                if (aboutView) aboutView.classList.add('active');
+                // Pause hero video
+                if (videoElement) videoElement.pause();
+            } else if (hash === '#contact') {
+                const contactView = document.getElementById('contact-view');
+                if (contactView) contactView.classList.add('active');
+                // Pause hero video
+                if (videoElement) videoElement.pause();
+            }
         }
     }
 
