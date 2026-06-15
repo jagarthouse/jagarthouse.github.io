@@ -624,4 +624,37 @@ document.addEventListener('DOMContentLoaded', function() {
         e.preventDefault();
         window.scrollTo(0, 0);
     }, { passive: false });
+
+    // Menu Drawer Toggle Logic
+    const toggleButton = document.getElementById('menu-toggle');
+    const drawer = document.getElementById('menu-drawer');
+    const label = toggleButton.querySelector('.toggle-text');
+
+    if (toggleButton && drawer && label) {
+        toggleButton.addEventListener('click', () => {
+            const isOpen = drawer.classList.toggle('open');
+            toggleButton.classList.toggle('active');
+            
+            // Staggered cross-fade for the label text
+            label.style.opacity = '0';
+            setTimeout(() => {
+                label.textContent = isOpen ? 'CLOSE' : 'MENU';
+                label.style.opacity = '1';
+            }, 150);
+        });
+
+        // Close menu when clicking a link
+        const links = drawer.querySelectorAll('.drawer-link');
+        links.forEach(link => {
+            link.addEventListener('click', () => {
+                drawer.classList.remove('open');
+                toggleButton.classList.remove('active');
+                label.style.opacity = '0';
+                setTimeout(() => {
+                    label.textContent = 'MENU';
+                    label.style.opacity = '1';
+                }, 150);
+            });
+        });
+    }
 });

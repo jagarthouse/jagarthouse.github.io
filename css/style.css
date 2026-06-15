@@ -410,3 +410,163 @@ footer {
     -webkit-touch-callout: none;
     -webkit-tap-highlight-color: transparent;
 } 
+
+/* ==========================================================================
+   Menu Toggle Button & Off-Canvas Drawer Styles
+   ========================================================================== */
+
+/* Menu Toggle Button */
+#menu-toggle {
+    position: fixed;
+    top: 1.5rem;
+    left: 1.5rem;
+    z-index: 2200; /* Higher than the menu drawer */
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.5rem;
+    color: #ffffff;
+    font-family: 'HelveticaNeueLight', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    font-weight: 300;
+    transition: opacity 0.3s ease;
+}
+
+#menu-toggle:hover {
+    opacity: 0.7;
+}
+
+#menu-toggle:focus {
+    outline: none;
+}
+
+.toggle-icon {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 20px;
+    height: 14px;
+}
+
+.line {
+    display: block;
+    height: 2px;
+    background-color: #ffffff;
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), width 0.4s ease;
+}
+
+.line-1 {
+    width: 20px;
+}
+
+.line-2 {
+    width: 14px;
+    align-self: flex-start;
+}
+
+/* Morphing to X */
+#menu-toggle.active .line-1 {
+    transform: translateY(3.5px) rotate(45deg);
+}
+
+#menu-toggle.active .line-2 {
+    width: 20px;
+    transform: translateY(-3.5px) rotate(-45deg);
+}
+
+.toggle-text {
+    transition: opacity 0.15s ease-in-out;
+    opacity: 1;
+}
+
+/* Off-Canvas Sidebar Drawer */
+#menu-drawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    height: 100dvh;
+    width: 35vw; /* Desktop width (approx 35%) */
+    background-color: #000000; /* Solid opaque high-contrast black overlay */
+    z-index: 2100; /* Behind toggle, above all else */
+    transform: translateX(-100%);
+    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    display: flex;
+    align-items: center;
+    padding-left: 5vw;
+    box-sizing: border-box;
+}
+
+#menu-drawer.open {
+    transform: translateX(0);
+}
+
+/* Responsive Menu Drawer Width */
+@media (max-width: 1024px) {
+    #menu-drawer {
+        width: 50vw;
+        padding-left: 8vw;
+    }
+}
+
+@media (max-width: 768px) {
+    #menu-drawer {
+        width: 100vw; /* Full screen on mobile */
+        padding-left: 2rem;
+    }
+}
+
+/* Oversized Brutalist Typography Links */
+.drawer-nav {
+    width: 100%;
+}
+
+.drawer-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem; /* Tight vertical stacking */
+    padding: 0;
+    margin: 0;
+}
+
+.drawer-links li {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1), transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Staggered Link Reveal when open */
+#menu-drawer.open .drawer-links li {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: calc(var(--index) * 50ms + 150ms);
+}
+
+/* Reset transition delay when drawer closes so they snap away together */
+#menu-drawer:not(.open) .drawer-links li {
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    transition-delay: 0s !important;
+}
+
+.drawer-link {
+    font-family: 'HelveticaNeueLight', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: clamp(2rem, 3.5vw, 4rem); /* Fluid oversized typography */
+    font-weight: 300;
+    color: #ffffff;
+    text-decoration: none;
+    letter-spacing: 4px;
+    line-height: 1.1;
+    display: inline-block;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.drawer-link:hover {
+    transform: translateX(10px);
+    opacity: 0.7;
+} 
