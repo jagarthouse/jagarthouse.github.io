@@ -314,18 +314,31 @@ footer {
     }
 } 
 
-#film-gif {
+#film-poster, #film-video {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
     transition: opacity 0.5s ease-in-out;
 }
 
-#film-gif.loading {
+#film-poster {
+    z-index: 1;
+    opacity: 1;
+}
+
+#film-poster.loading {
     opacity: 0.7;
 }
 
-#film-gif.loaded {
+#film-video {
+    z-index: 2;
+    opacity: 0;
+}
+
+#film-video.playing {
     opacity: 1;
 } 
 
@@ -340,7 +353,7 @@ footer {
         padding: 1rem;
     }
     
-    #film-gif {
+    #film-poster, #film-video {
         width: 100%;
         height: 100%;
         object-fit: cover;
@@ -377,7 +390,7 @@ footer {
 }
 
 /* Ensure proper image loading on mobile */
-#film-gif {
+#film-poster, #film-video {
     width: 100%;
     height: 100%;
     object-fit: cover;

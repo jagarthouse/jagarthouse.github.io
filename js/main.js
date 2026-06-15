@@ -3,12 +3,14 @@ document.addEventListener('DOMContentLoaded', function() {
         {
             title: 'NORTH VALLEY',
             thumbnail: 'videos/film1.png', // Using a static image for thumbnail
-            src: 'videos/film1.gif'
+            src: 'videos/film1.webm',
+            mp4: 'videos/film1.mp4'
         },
         {
             title: 'POSTCARDS OF SF',
             thumbnail: 'videos/film2.png', // Using a static image for thumbnail
-            src: 'videos/film2.gif'
+            src: 'videos/film2.webm',
+            mp4: 'videos/film2.mp4'
         },
         {
             title: 'Coming Soon™',
@@ -29,6 +31,9 @@ document.addEventListener('DOMContentLoaded', function() {
             if (index === 1) filmContent.classList.add('next');
             
             filmContent.dataset.src = film.src;
+            if (film.mp4) {
+                filmContent.dataset.mp4 = film.mp4;
+            }
             filmContent.dataset.thumbnail = film.thumbnail;
 
             if (film.isComingSoon) {
@@ -47,10 +52,10 @@ document.addEventListener('DOMContentLoaded', function() {
     renderFilms();
 
 
-    const imageElement = document.getElementById('film-gif');
+    const posterElement = document.getElementById('film-poster');
+    const videoElement = document.getElementById('film-video');
     const filmContents = document.querySelectorAll('.film-content');
     let currentIndex = 0;
-    let scrollTimeout = null;
     
     // Priority-based loading system
     const loadingQueue = {
@@ -60,40 +65,56 @@ document.addEventListener('DOMContentLoaded', function() {
     };
     
     const thumbnailCache = {};
-    const fullImageCache = {};
+    const mediaCache = {}; // Cache for images (Image elements) and video Object URLs
     let isThumbnailsLoaded = false;
+
+    // Helper to fetch video as Blob and cache Object URL for instant playback
+    async function preloadVideo(url) {
+        if (mediaCache[url]) return mediaCache[url];
+        try {
+            console.log('Preloading video into cache:', url);
+            const response = await fetch(url);
+            const blob = await response.blob();
+            const objectURL = URL.createObjectURL(blob);
+            mediaCache[url] = objectURL;
+            return objectURL;
+        } catch (e) {
+            console.warn('Failed to fetch video blob for caching:', url, e);
+            // Fallback: return original URL
+            return url;
+        }
+    }
     
     // Initialize loading queue
     function initializeLoadingQueue() {
         filmContents.forEach((content, index) => {
             const thumbnailSrc = content.dataset.thumbnail;
             const fullSrc = content.dataset.src;
+            const mp4Src = content.dataset.mp4;
             
             // Add thumbnails to high priority queue
             if (thumbnailSrc) {
                 loadingQueue.thumbnails.push({
                     src: thumbnailSrc,
                     index: index,
-                    priority: 'high'
+                    type: 'image'
                 });
             }
             
-            // Add full images to appropriate queues
+            // Add full media to appropriate queues
             if (fullSrc) {
+                const isVideo = fullSrc.endsWith('.webm') || fullSrc.endsWith('.mp4');
+                const queueItem = {
+                    src: fullSrc,
+                    mp4: mp4Src,
+                    index: index,
+                    type: isVideo ? 'video' : 'image'
+                };
+                
                 if (index === 0) {
-                    // First image - load immediately after thumbnails
-                    loadingQueue.visibleImages.push({
-                        src: fullSrc,
-                        index: index,
-                        priority: 'medium'
-                    });
+                    loadingQueue.visibleImages.push(queueItem);
                 } else {
-                    // Other images - load in background
-                    loadingQueue.backgroundImages.push({
-                        src: fullSrc,
-                        index: index,
-                        priority: 'low'
-                    });
+                    loadingQueue.backgroundImages.push(queueItem);
                 }
             }
         });
@@ -103,7 +124,6 @@ document.addEventListener('DOMContentLoaded', function() {
     async function loadThumbnails() {
         console.log('Loading thumbnails...');
         
-        // Load thumbnails with highest priority - no delays
         const thumbnailPromises = loadingQueue.thumbnails.map(item => {
             return new Promise((resolve) => {
                 const img = new Image();
@@ -116,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     console.warn('Thumbnail failed:', item.src);
                     // Create a fallback - use the full image as thumbnail
                     const fullSrc = filmContents[item.index].dataset.src;
-                    if (fullSrc) {
+                    if (fullSrc && !fullSrc.endsWith('.webm') && !fullSrc.endsWith('.mp4')) {
                         const fallbackImg = new Image();
                         fallbackImg.onload = () => {
                             thumbnailCache[item.src] = fallbackImg;
@@ -150,20 +170,29 @@ document.addEventListener('DOMContentLoaded', function() {
     async function loadVisibleImages() {
         console.log('Loading visible images...');
         const visiblePromises = loadingQueue.visibleImages.map(item => {
-            return new Promise((resolve, reject) => {
-                const img = new Image();
-                img.onload = () => {
-                    fullImageCache[item.src] = img;
-                    console.log('Visible image loaded:', item.src);
-                    resolve(item);
-                };
-                img.onerror = () => {
-                    console.warn('Visible image failed:', item.src);
-                    fullImageCache[item.src] = null;
-                    resolve(item);
-                };
-                img.src = item.src;
-            });
+            if (item.type === 'video') {
+                return preloadVideo(item.src).then(res => {
+                    if (item.mp4) {
+                        return preloadVideo(item.mp4).then(() => item);
+                    }
+                    return item;
+                });
+            } else {
+                return new Promise((resolve) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        mediaCache[item.src] = img;
+                        console.log('Visible image loaded:', item.src);
+                        resolve(item);
+                    };
+                    img.onerror = () => {
+                        console.warn('Visible image failed:', item.src);
+                        mediaCache[item.src] = null;
+                        resolve(item);
+                    };
+                    img.src = item.src;
+                });
+            }
         });
         
         await Promise.all(visiblePromises);
@@ -173,30 +202,38 @@ document.addEventListener('DOMContentLoaded', function() {
         loadBackgroundImages();
     }
     
-    // Load background images with lower priority
+    // Load background images/videos with lower priority
     async function loadBackgroundImages() {
         console.log('Loading background images...');
-        // Load background images one at a time to avoid overwhelming the connection
         for (const item of loadingQueue.backgroundImages) {
             await new Promise((resolve) => {
-                const img = new Image();
-                img.onload = () => {
-                    fullImageCache[item.src] = img;
-                    console.log('Background image loaded:', item.src);
-                    resolve();
-                };
-                img.onerror = () => {
-                    console.warn('Background image failed:', item.src);
-                    fullImageCache[item.src] = null;
-                    resolve();
-                };
-                img.src = item.src;
-                
-                // Add small delay between loads to be gentle on the connection
-                setTimeout(resolve, 100);
+                if (item.type === 'video') {
+                    preloadVideo(item.src).then(() => {
+                        if (item.mp4) {
+                            preloadVideo(item.mp4).then(resolve);
+                        } else {
+                            resolve();
+                        }
+                    });
+                } else {
+                    const img = new Image();
+                    img.onload = () => {
+                        mediaCache[item.src] = img;
+                        console.log('Background image loaded:', item.src);
+                        resolve();
+                    };
+                    img.onerror = () => {
+                        console.warn('Background image failed:', item.src);
+                        mediaCache[item.src] = null;
+                        resolve();
+                    };
+                    img.src = item.src;
+                }
             });
+            // Add small delay between loads to be gentle on the connection
+            await new Promise(r => setTimeout(r, 100));
         }
-        console.log('All background images loaded');
+        console.log('All background media loaded');
     }
     
     // Initialize and start loading
@@ -206,23 +243,20 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add loading indicator
     function showLoadingProgress() {
         const totalImages = loadingQueue.thumbnails.length + loadingQueue.visibleImages.length + loadingQueue.backgroundImages.length;
-        const loadedImages = Object.keys(thumbnailCache).length + Object.keys(fullImageCache).length;
+        const loadedImages = Object.keys(thumbnailCache).length + Object.keys(mediaCache).length;
         const progress = Math.round((loadedImages / totalImages) * 100);
         
         console.log(`Loading progress: ${progress}% (${loadedImages}/${totalImages})`);
         
-        // You can add a visual progress bar here if desired
         if (progress < 100) {
             setTimeout(showLoadingProgress, 500);
         }
     }
     
-    // Start progress monitoring
     setTimeout(showLoadingProgress, 1000);
 
     // Function to update content with thumbnail-first loading
     function updateContent(index) {
-        // Performance tracking
         const startTime = performance.now();
 
         // Remove active and next classes from all contents
@@ -241,99 +275,134 @@ document.addEventListener('DOMContentLoaded', function() {
         // Get thumbnail and full image sources
         const thumbnailSrc = filmContents[index].dataset.thumbnail;
         const fullSrc = filmContents[index].dataset.src;
+        const mp4Src = filmContents[index].dataset.mp4;
+        const isVideo = fullSrc && (fullSrc.endsWith('.webm') || fullSrc.endsWith('.mp4'));
         
-        if (imageElement && thumbnailSrc && fullSrc) {
-            // ALWAYS show thumbnail instantly - this is the key to speed!
-            imageElement.classList.add('loading');
-            imageElement.src = thumbnailSrc;
+        if (posterElement && thumbnailSrc && fullSrc) {
+            // ALWAYS show thumbnail instantly
+            posterElement.classList.add('loading');
+            posterElement.src = thumbnailSrc;
+            posterElement.style.opacity = '1';
             
-            // Calculate and log thumbnail display speed
             const thumbnailTime = performance.now() - startTime;
             console.log(`🚀 INSTANT: Thumbnail displayed in ${thumbnailTime.toFixed(2)}ms for slide ${index + 1}`);
             
-            // Now load the full image in the background without blocking
-            if (fullImageCache[fullSrc]) {
-                // Full image is already cached, switch to it after a brief delay
-                setTimeout(() => {
-                    imageElement.src = fullSrc;
-                    imageElement.classList.remove('loading');
-                    imageElement.classList.add('loaded');
-                    const totalTime = performance.now() - startTime;
-                    console.log(`✨ UPGRADED: Switched to full image in ${totalTime.toFixed(2)}ms for slide ${index + 1}`);
-                }, 300); // Slightly longer delay for better UX
-            } else {
-                // Load full image in background, don't wait for it
-                const img = new Image();
-                img.onload = () => {
-                    fullImageCache[fullSrc] = img;
-                    // Only switch if user is still on this slide
-                    if (currentIndex === index) {
-                        imageElement.src = fullSrc;
-                        imageElement.classList.remove('loading');
-                        imageElement.classList.add('loaded');
-                        const totalTime = performance.now() - startTime;
-                        console.log(`🎯 UPGRADED: Full image loaded in ${totalTime.toFixed(2)}ms for slide ${index + 1}`);
-                    }
-                };
-                img.onerror = () => {
-                    console.error('Failed to load image:', fullSrc);
-                    // Don't change the display, just log the error
-                };
-                img.src = fullSrc;
+            if (isVideo) {
+                // Video slide
+                const cachedWebm = mediaCache[fullSrc];
+                const cachedMp4 = mp4Src ? mediaCache[mp4Src] : null;
+
+                // Stop any playing video, clear playing class
+                videoElement.classList.remove('playing');
+                videoElement.pause();
                 
-                // Remove loading state after a reasonable time even if full image fails
-                setTimeout(() => {
-                    if (currentIndex === index) {
-                        imageElement.classList.remove('loading');
-                        imageElement.classList.add('loaded');
-                    }
-                }, 1000);
+                // Set video sources (use cached blob URLs if available)
+                videoElement.innerHTML = `
+                    <source src="${cachedWebm || fullSrc}" type="video/webm">
+                    ${mp4Src ? `<source src="${cachedMp4 || mp4Src}" type="video/mp4">` : ''}
+                `;
+                videoElement.load();
+                
+                // Cross-fade when playing begins
+                videoElement.onplaying = () => {
+                    videoElement.classList.add('playing');
+                    posterElement.style.opacity = '0';
+                    posterElement.classList.remove('loading');
+                    const totalTime = performance.now() - startTime;
+                    console.log(`✨ UPGRADED: Video started playing in ${totalTime.toFixed(2)}ms for slide ${index + 1}`);
+                };
+
+                videoElement.play().catch(err => {
+                    console.warn('Video playback was interrupted or failed:', err);
+                    // Fade out poster anyway to show fallback or black if it failed completely
+                    setTimeout(() => {
+                        if (currentIndex === index) {
+                            posterElement.classList.remove('loading');
+                        }
+                    }, 1000);
+                });
+            } else {
+                // Static image slide
+                videoElement.classList.remove('playing');
+                videoElement.pause();
+                
+                if (mediaCache[fullSrc]) {
+                    // Full image is already cached
+                    setTimeout(() => {
+                        posterElement.src = fullSrc;
+                        posterElement.classList.remove('loading');
+                        const totalTime = performance.now() - startTime;
+                        console.log(`✨ UPGRADED: Switched to full image in ${totalTime.toFixed(2)}ms for slide ${index + 1}`);
+                    }, 300);
+                } else {
+                    // Load full image in background
+                    const img = new Image();
+                    img.onload = () => {
+                        mediaCache[fullSrc] = img;
+                        if (currentIndex === index) {
+                            posterElement.src = fullSrc;
+                            posterElement.classList.remove('loading');
+                            const totalTime = performance.now() - startTime;
+                            console.log(`🎯 UPGRADED: Full image loaded in ${totalTime.toFixed(2)}ms for slide ${index + 1}`);
+                        }
+                    };
+                    img.onerror = () => {
+                        console.error('Failed to load image:', fullSrc);
+                        if (currentIndex === index) {
+                            posterElement.classList.remove('loading');
+                        }
+                    };
+                    img.src = fullSrc;
+                }
             }
         }
     }
 
-    // Initial load - show first thumbnail then full image
+    // Initial load - show first thumbnail then full video/image
     function initialLoad() {
         const firstContent = filmContents[0];
         const thumbnailSrc = firstContent.dataset.thumbnail;
         const fullSrc = firstContent.dataset.src;
+        const mp4Src = firstContent.dataset.mp4;
+        const isVideo = fullSrc && (fullSrc.endsWith('.webm') || fullSrc.endsWith('.mp4'));
         
-        if (imageElement && thumbnailSrc && fullSrc) {
-            // Show thumbnail first
-            imageElement.classList.add('loading');
+        if (posterElement && thumbnailSrc && fullSrc) {
+            posterElement.classList.add('loading');
             
             if (thumbnailCache[thumbnailSrc]) {
-                imageElement.src = thumbnailSrc;
+                posterElement.src = thumbnailSrc;
+            } else {
+                posterElement.src = fullSrc;
             }
-            else {
-                // Fallback to full image if thumbnail failed
-                imageElement.src = fullSrc;
-            }
+            posterElement.style.opacity = '1';
+            videoElement.classList.remove('playing');
             
-            // Wait for thumbnails to load, then show full image
             const checkAndLoad = () => {
-                if (fullImageCache[fullSrc]) {
-                    imageElement.src = fullSrc;
-                    imageElement.classList.remove('loading');
-                    imageElement.classList.add('loaded');
-                } else if (isThumbnailsLoaded) {
-                    // Thumbnails are loaded but full image isn't ready yet
-                    // Load it on demand
-                    const img = new Image();
-                    img.onload = () => {
-                        fullImageCache[fullSrc] = img;
-                        imageElement.src = fullSrc;
-                        imageElement.classList.remove('loading');
-                        imageElement.classList.add('loaded');
-                    };
-                    img.onerror = () => {
-                        console.error('Failed to load initial image:', fullSrc);
-                        imageElement.classList.remove('loading');
-                        imageElement.classList.add('loaded');
-                    };
-                    img.src = fullSrc;
+                const isCached = isVideo ? mediaCache[fullSrc] : mediaCache[fullSrc];
+                
+                if (isCached || isThumbnailsLoaded) {
+                    if (isVideo) {
+                        const cachedWebm = mediaCache[fullSrc];
+                        const cachedMp4 = mp4Src ? mediaCache[mp4Src] : null;
+
+                        videoElement.innerHTML = `
+                            <source src="${cachedWebm || fullSrc}" type="video/webm">
+                            ${mp4Src ? `<source src="${cachedMp4 || mp4Src}" type="video/mp4">` : ''}
+                        `;
+                        videoElement.load();
+                        
+                        videoElement.onplaying = () => {
+                            videoElement.classList.add('playing');
+                            posterElement.style.opacity = '0';
+                            posterElement.classList.remove('loading');
+                        };
+                        videoElement.play().catch(err => console.warn(err));
+                    } else {
+                        posterElement.src = fullSrc;
+                        posterElement.classList.remove('loading');
+                    }
                 } else {
-                    // Still loading thumbnails, check again in a bit
+                    // Check again in a bit
                     setTimeout(checkAndLoad, 100);
                 }
             };
@@ -342,48 +411,39 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Start initial load
     initialLoad();
 
-    let scrolling = false;
-    let wheelEventEndTimeout = null;
-    // Handle scroll events (desktop) with debouncing
-    function scrollBehavior(e) {
+    let isScrolling = false; // Global flag to control page transitions
+    let scrollCooldownTimeout = null; // Global timeout to manage cooldown
+
+    // Handle scroll events (desktop)
+    window.addEventListener('wheel', function(e) {
         e.preventDefault();
         
-        console.log("scrolling start");
+        if (isScrolling) { return; } // If already scrolling, do nothing
+
+        isScrolling = true; // Lock scrolling immediately
+
+        if (e.deltaY > 0 && currentIndex < filmContents.length - 1) {
+            // Scrolling down
+            currentIndex++;
+            updateContent(currentIndex);
+        } else if (e.deltaY < 0 && currentIndex > 0) {
+            // Scrolling up
+            currentIndex--;
+            updateContent(currentIndex);
+        }
         
-        if (!scrolling) {
-            window.removeEventListener("wheel", scrollBehavior)
-
-            clearTimeout(wheelEventEndTimeout);
-            wheelEventEndTimeout = setTimeout(() => {
-                console.log("scroll end")
-                window.addEventListener('wheel', scrollBehavior, { passive: false });
-                scrolling = false;
-            }, 2000);    
-
-            scrolling = true;
-
-            if (e.deltaY > 0 && currentIndex < filmContents.length - 1) {
-                
-                // Scrolling down
-                currentIndex++;
-                updateContent(currentIndex);
-            } else if (e.deltaY < 0 && currentIndex > 0) {
-                // Scrolling up
-                currentIndex--;
-                updateContent(currentIndex);
-            }
-
-        } 
-    }
-
-    window.addEventListener('wheel', scrollBehavior, { passive: false });
+        // Set a cooldown period after the scroll action is processed
+        clearTimeout(scrollCooldownTimeout);
+        scrollCooldownTimeout = setTimeout(() => {
+            isScrolling = false; // Re-enable scrolling after cooldown
+        }, 800); // This duration should be slightly longer than your page transition animation
+    }, { passive: false });
 
     // Handle touch events (mobile)
     let touchStartY = 0;
-    let touchEndY = 0;
+;
     
     window.addEventListener('touchstart', function(e) {
         touchStartY = e.touches[0].clientY;
@@ -391,11 +451,10 @@ document.addEventListener('DOMContentLoaded', function() {
     
     window.addEventListener('touchend', function(e) {
         touchEndY = e.changedTouches[0].clientY;
-        handleTouchSwipe();
-    }, { passive: true });
-    
-    function handleTouchSwipe() {
         
+        if (isScrolling) { return; } // If already scrolling, do nothing
+        isScrolling = true; // Lock scrolling immediately for touch
+
         const swipeThreshold = 50; // Minimum swipe distance
         const swipeDistance = touchStartY - touchEndY;
         
@@ -410,7 +469,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 updateContent(currentIndex);
             }
         }
-    }
+
+        // Set a cooldown period after the swipe action is processed
+        clearTimeout(scrollCooldownTimeout);
+        scrollCooldownTimeout = setTimeout(() => {
+            isScrolling = false; // Re-enable scrolling after cooldown
+        }, 800); // This duration should be slightly longer than your page transition animation
+    }, { passive: true });
 
     // Prevent default scroll behavior
     window.addEventListener('scroll', function(e) {
