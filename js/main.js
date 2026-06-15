@@ -628,12 +628,25 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 800); // This duration should be slightly longer than your page transition animation
     }, { passive: true });
 
-    // Prevent default scroll behavior only on projects slideshow
+    // Handle scroll behavior (prevent default scroll on slideshow, and animate header on scrollable sub-pages)
     window.addEventListener('scroll', function(e) {
         const hash = window.location.hash || '#projects';
+        const header = document.querySelector('header');
+        
         if (hash === '#projects') {
             e.preventDefault();
             window.scrollTo(0, 0);
+            if (header) {
+                header.classList.remove('hidden');
+            }
+        } else {
+            if (header) {
+                if (window.scrollY > 20) {
+                    header.classList.add('hidden');
+                } else {
+                    header.classList.remove('hidden');
+                }
+            }
         }
     }, { passive: false });
 
@@ -729,14 +742,16 @@ document.addEventListener('DOMContentLoaded', function() {
     function handleRouting() {
         const hash = window.location.hash || '#projects';
         
-        // Reset scroll header state
-        const header = document.querySelector('header');
-        if (header) header.classList.remove('scrolled');
-        
         // Remove active class from all views
         document.querySelectorAll('.view').forEach(view => {
             view.classList.remove('active');
         });
+        
+        // Reset header hidden state on route change
+        const header = document.querySelector('header');
+        if (header) {
+            header.classList.remove('hidden');
+        }
         
         // Scroll to top of the document
         window.scrollTo(0, 0);
@@ -777,18 +792,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     window.addEventListener('hashchange', handleRouting);
-    
-    // Add blurred radial header background effect on scroll
-    window.addEventListener('scroll', function() {
-        const header = document.querySelector('header');
-        if (!header) return;
-        
-        if (window.scrollY > 10) {
-            header.classList.add('scrolled');
-        } else {
-            header.classList.remove('scrolled');
-        }
-    });
     
     // Run router on load
     handleRouting();
