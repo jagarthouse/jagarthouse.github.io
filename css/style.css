@@ -153,6 +153,7 @@ nav {
     text-align: center;
     font-family: 'Aguafina', cursive, sans-serif;
     text-transform: none; /* Cursive script fonts should not be forced uppercase */
+    white-space: nowrap; /* Prevent line breaks on any screen width */
 }
 
 nav ul {
@@ -448,8 +449,8 @@ footer {
 /* Mobile-specific improvements */
 @media (max-width: 768px) {
     .logo {
-        font-size: 3rem;
-        margin-top: 10px;
+        font-size: 2.5rem; /* Scaled down slightly to fit small mobile screens */
+        margin-top: 35px;  /* Sit lower in mobile view */
     }
     
     header {
