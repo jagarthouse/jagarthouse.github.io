@@ -148,8 +148,8 @@ nav a:hover {
 
 .film-content.next {
     bottom: 5%;
-    opacity: 0.25;
-    transform: translateY(0) scale(0.6);
+    opacity: 0.1; /* Less opaque (more transparent, subtle) */
+    transform: translateY(0) scale(0.85); /* Larger preview size */
     pointer-events: none;
 }
 
@@ -184,9 +184,9 @@ nav a:hover {
 
 .film-content.next .film-title {
     font-family: 'HelveticaNeueLight', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    font-size: 1.8rem;
+    font-size: 2.2rem; /* Larger font size */
     font-weight: 300;
-    opacity: 0.25;
+    opacity: 1; /* Inherit the parent's subtle opacity instead of multiplying */
     transform: translateY(0);
     margin-bottom: 0.2rem;
     white-space: nowrap;
@@ -196,7 +196,7 @@ nav a:hover {
 
 .film-content.next .film-description {
     font-size: 0.8rem;
-    opacity: 0.25;
+    opacity: 1; /* Inherit parent's opacity */
     transform: translateY(0);
 }
 
@@ -287,9 +287,9 @@ footer {
 
 .film-content.next .coming-soon-title {
     font-family: 'HelveticaNeueLight', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    font-size: 1.2rem;
+    font-size: 1.6rem; /* Larger preview size */
     font-weight: 300;
-    opacity: 0.25;
+    opacity: 1; /* Inherit parent's opacity */
     transform: translateY(0);
     text-shadow: none;
     white-space: nowrap;
