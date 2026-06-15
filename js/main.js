@@ -729,6 +729,10 @@ document.addEventListener('DOMContentLoaded', function() {
     function handleRouting() {
         const hash = window.location.hash || '#projects';
         
+        // Reset scroll header state
+        const header = document.querySelector('header');
+        if (header) header.classList.remove('scrolled');
+        
         // Remove active class from all views
         document.querySelectorAll('.view').forEach(view => {
             view.classList.remove('active');
@@ -773,6 +777,18 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     window.addEventListener('hashchange', handleRouting);
+    
+    // Add blurred radial header background effect on scroll
+    window.addEventListener('scroll', function() {
+        const header = document.querySelector('header');
+        if (!header) return;
+        
+        if (window.scrollY > 10) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
+        }
+    });
     
     // Run router on load
     handleRouting();
