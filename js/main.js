@@ -803,3 +803,43 @@ document.addEventListener('DOMContentLoaded', function() {
     // Run router on load
     handleRouting();
 });
+
+// Website performance load timing analytics
+window.addEventListener('load', function() {
+    // Wait a brief moment to ensure all performance metrics are fully computed and populated by the browser
+    setTimeout(function() {
+        if (typeof gtag !== 'function') return;
+        
+        try {
+            const navEntry = performance.getEntriesByType('navigation')[0];
+            if (!navEntry) return;
+
+            // Page Load Time (navigation start to load event end)
+            const loadTime = Math.round(navEntry.loadEventEnd);
+            // DOM Content Loaded (navigation start to domContentLoaded end)
+            const domLoaded = Math.round(navEntry.domContentLoadedEventEnd);
+            // Connection time (TCP + SSL + DNS)
+            const connectionTime = Math.round(navEntry.connectEnd - navEntry.connectStart);
+
+            const performancePayload = {
+                'page_load_time_ms': loadTime,
+                'dom_content_loaded_ms': domLoaded,
+                'connection_time_ms': connectionTime,
+                'page_path': window.location.pathname
+            };
+
+            // Capture First Contentful Paint (FCP) if supported
+            const paintEntries = performance.getEntriesByType('paint');
+            const fcpEntry = paintEntries.find(entry => entry.name === 'first-contentful-paint');
+            if (fcpEntry) {
+                performancePayload['first_contentful_paint_ms'] = Math.round(fcpEntry.startTime);
+            }
+
+            // Report to Google Analytics 4
+            gtag('event', 'performance_timing', performancePayload);
+            console.log('Performance metrics reported to GA4:', performancePayload);
+        } catch (error) {
+            console.warn('Unable to log performance metrics:', error);
+        }
+    }, 1000);
+});
