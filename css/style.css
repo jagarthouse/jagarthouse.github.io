@@ -116,7 +116,7 @@ nav {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     font-size: 1.8rem;
     line-height: 1;
-    margin: 0 0.35rem; /* Balanced horizontal spacing */
+    margin: 0 0.18rem; /* Tighter horizontal spacing */
     vertical-align: 0.22em; /* Align dot vertically relative to the baseline of cursive script */
     color: #ffffff;
     opacity: 0.9;
@@ -421,7 +421,7 @@ footer {
     
     .logo-dot {
         font-size: 1.1rem;
-        margin: 0 0.15rem;
+        margin: 0 0.08rem;
         vertical-align: 0.22em;
     }
     
