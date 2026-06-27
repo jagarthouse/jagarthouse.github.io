@@ -3,153 +3,230 @@ document.addEventListener('DOMContentLoaded', function() {
         {
             title: 'DIASPORA',
             thumbnail: 'videos/DIASPORA_shortfilm1_thumb.webp',
-            src: 'videos/DIASPORA_shortfilm1.webp'
+            src: 'videos/DIASPORA_shortfilm1.webp',
+            year: '2026',
+            genre: 'Short Film',
+            description: 'An atmospheric short film exploring displacement, identity, and personal heritage.'
         },
         {
             title: 'NOCTURNAL',
             thumbnail: 'videos/NOCTURNAL1_thumb.webp',
-            src: 'videos/NOCTURNAL1.webp'
+            src: 'videos/NOCTURNAL1.webp',
+            year: '2026',
+            genre: 'Visual Art / Experimental',
+            description: 'A dark, moody cinematic study of urban nightlife and high-contrast composition.'
         },
         {
             title: 'NOCTURNAL ',
             thumbnail: 'videos/NOCTURNAL2_thumb.webp',
-            src: 'videos/NOCTURNAL2.webp'
+            src: 'videos/NOCTURNAL2.webp',
+            year: '2026',
+            genre: 'Visual Art / Experimental',
+            description: 'A dark, moody cinematic study of urban nightlife and high-contrast composition.'
         },
         {
             title: 'PINKWALL',
             thumbnail: 'videos/GirlsInLA_thumb.webp',
-            src: 'videos/GirlsInLA.webp'
+            src: 'videos/GirlsInLA.webp',
+            year: '2026',
+            genre: 'Music Video / Fashion Film',
+            description: 'A vibrant music video/fashion film exploring youth culture and pop color styles.'
         },
         {
             title: 'KILLER SERVE',
             thumbnail: 'videos/KillerServe_thumb.webp',
-            src: 'videos/KillerServe.webp'
+            src: 'videos/KillerServe.webp',
+            year: '2026',
+            genre: 'Commercial / Sports Film',
+            description: 'High-energy sports commercial showcasing athletic action and precision.'
         },
-
         {
             title: 'BIGGER PROBLEMS',
             thumbnail: 'videos/BiggerProblems_TeYo1_thumb.webp',
-            src: 'videos/BiggerProblems_TeYo1.webp'
+            src: 'videos/BiggerProblems_TeYo1.webp',
+            year: '2026',
+            genre: 'Music Video / Narrative',
+            description: 'A narrative music video blending intimate performances with dramatic lighting.'
         },
-
         {
             title: 'HALLOWEEKEND',
             thumbnail: 'videos/CKK_party.webp',
             src: 'videos/CKK_party.webm',
-            mp4: 'videos/CKK_party.mp4'
+            mp4: 'videos/CKK_party.mp4',
+            year: '2026',
+            genre: 'Event / Aftermovie',
+            description: 'High-energy event aftermovie capturing nighttime party vibes.'
         },
         {
             title: 'MAGNOLIA',
             thumbnail: 'videos/untitled8.webp',
             src: 'videos/untitled8.webm',
-            mp4: 'videos/untitled8.mp4'
+            mp4: 'videos/untitled8.mp4',
+            year: '2026',
+            genre: 'Commercial / Narrative',
+            description: 'Emotive short commercial focusing on natural aesthetics and human emotion.'
         },
         {
             title: 'NEW NUISANCE',
             thumbnail: 'videos/untitled5_thumb.webp',
-            src: 'videos/untitled5.webp'
+            src: 'videos/untitled5.webp',
+            year: '2026',
+            genre: 'Experimental / Short Film',
+            description: 'A gritty, low-fidelity film study of urban isolation.'
         },
         {
             title: 'BAD',
             thumbnail: 'videos/Marado_BAD_mv1_thumb.webp',
-            src: 'videos/Marado_BAD_mv1.webp'
+            src: 'videos/Marado_BAD_mv1.webp',
+            year: '2026',
+            genre: 'Music Video',
+            description: 'Stylish music video using fast camera movements and choreography.'
         },
         {
             title: 'BAD ',
             thumbnail: 'videos/Marado_BAD_mv2_thumb.webp',
-            src: 'videos/Marado_BAD_mv2.webp'
+            src: 'videos/Marado_BAD_mv2.webp',
+            year: '2026',
+            genre: 'Music Video',
+            description: 'Stylish music video using fast camera movements and choreography.'
         },
         {
             title: 'DOWN IN LA',
             thumbnail: 'videos/DowninLA_thumb.webp',
-            src: 'videos/DowninLA.webp'
+            src: 'videos/DowninLA.webp',
+            year: '2026',
+            genre: 'Visual Poem',
+            description: 'A visual poem capturing architectural landscapes and warm tones in Los Angeles.'
         },
         {
             title: 'SANTA SUSANA',
             thumbnail: 'videos/untitled7.webp',
             src: 'videos/untitled7.webm',
-            mp4: 'videos/untitled7.mp4'
+            mp4: 'videos/untitled7.mp4',
+            year: '2026',
+            genre: 'Narrative / Drama',
+            description: 'A dramatic narrative short set against vast nature backgrounds.'
         },
         {
             title: 'HEIGHTS of MARINA',
             thumbnail: 'videos/Diaspora_Promo_thumb.webp',
-            src: 'videos/Diaspora_Promo.webp'
+            src: 'videos/Diaspora_Promo.webp',
+            year: '2026',
+            genre: 'Commercial / Architectural',
+            description: 'Real estate commercial showing interior design and fluid camera movement.'
         },
-
-
         {
             title: 'OLDIES BUT GOLDIES',
             thumbnail: 'videos/OldiesButGoldies_thumb.webp',
-            src: 'videos/OldiesButGoldies.webp'
+            src: 'videos/OldiesButGoldies.webp',
+            year: '2025',
+            genre: 'Visual Art / Retrospective',
+            description: 'Nostalgic retrospective styled with classic vintage color grading.'
         },
         {
             title: 'MARADO PreVis',
             thumbnail: 'videos/Marado_MV_test_thumb.webp',
-            src: 'videos/Marado_MV_test.webp'
+            src: 'videos/Marado_MV_test.webp',
+            year: '2026',
+            genre: 'Behind the Scenes / Pre-visualization',
+            description: 'Behind-the-scenes layout planning and early visual concept tests.'
         },
         {
             title: 'DIASPORA PreVis',
             thumbnail: 'videos/Diaspora_PreVis_thumb.webp',
-            src: 'videos/Diaspora_PreVis.webp'
+            src: 'videos/Diaspora_PreVis.webp',
+            year: '2026',
+            genre: 'Behind the Scenes / Pre-visualization',
+            description: 'Early shot-composition drafting and location test reel.'
         },
-
         {
             title: 'SIMILIS',
             thumbnail: 'videos/SIMILIS_thumb.webp',
-            src: 'videos/SIMILIS.webp'
+            src: 'videos/SIMILIS.webp',
+            year: '2026',
+            genre: 'Short Film / Sci-Fi',
+            description: 'Moody science fiction short focusing on geometric patterns and reflection.'
         },
         {
             title: 'YALA Spec Ad',
             thumbnail: 'videos/yala_specad_thumb.webp',
-            src: 'videos/yala_specad.webp'
+            src: 'videos/yala_specad.webp',
+            year: '2026',
+            genre: 'Commercial / Spec Ad',
+            description: 'A modern product spec commercial highlighting visual contrast.'
         },
         {
             title: 'CALL ME WHEN YOU CAN',
             thumbnail: 'videos/untitled1_thumb.webp',
-            src: 'videos/untitled1.webp'
+            src: 'videos/untitled1.webp',
+            year: '2026',
+            genre: 'Narrative / Drama',
+            description: 'Tension-filled short thriller revolving around a telephone call.'
         },
         {
             title: 'YERBA ISLE',
             thumbnail: 'videos/untitled2_thumb.webp',
-            src: 'videos/untitled2.webp'
+            src: 'videos/untitled2.webp',
+            year: '2026',
+            genre: 'Visual Poem / Travel',
+            description: 'Clean landscape shots capturing coastal imagery and relaxation.'
         },
         {
             title: 'SAY, DELILAH',
             thumbnail: 'videos/untitled3_thumb.webp',
-            src: 'videos/untitled3.webp'
+            src: 'videos/untitled3.webp',
+            year: '2026',
+            genre: 'Music Video / Romance',
+            description: 'A narrative-focused music video showcasing romantic storytelling.'
         },
         {
             title: 'JAY SOMBER of WHITHER',
             thumbnail: 'videos/untitled4_thumb.webp',
-            src: 'videos/untitled4.webp'
+            src: 'videos/untitled4.webp',
+            year: '2026',
+            genre: 'Portrait / Documentary',
+            description: 'Documentary interview exploring visual artwork design.'
         },
         {
             title: 'BIGGER PROBLEMS ',
             thumbnail: 'videos/BiggerProblems_TeYo2_thumb.webp',
-            src: 'videos/BiggerProblems_TeYo2.webp'
-        },  
+            src: 'videos/BiggerProblems_TeYo2.webp',
+            year: '2026',
+            genre: 'Music Video / Narrative',
+            description: 'A narrative music video blending intimate performances with dramatic lighting.'
+        },
         {
             title: 'DIASPORA ',
             thumbnail: 'videos/DIASPORA_shortfilm2_thumb.webp',
-            src: 'videos/DIASPORA_shortfilm2.webp'
-        }, 
+            src: 'videos/DIASPORA_shortfilm2.webp',
+            year: '2026',
+            genre: 'Short Film',
+            description: 'An atmospheric short film exploring displacement, identity, and personal heritage.'
+        },
         {
             title: 'DIASPORA  ',
             thumbnail: 'videos/DIASPORA_shortfilm3_thumb.webp',
-            src: 'videos/DIASPORA_shortfilm3.webp'
+            src: 'videos/DIASPORA_shortfilm3.webp',
+            year: '2026',
+            genre: 'Short Film',
+            description: 'An atmospheric short film exploring displacement, identity, and personal heritage.'
         },
-
-
         {
             title: 'LOVE STORY ON THE PIER',
             thumbnail: 'videos/untitled6.webp',
             src: 'videos/untitled6.webm',
-            mp4: 'videos/untitled6.mp4'
+            mp4: 'videos/untitled6.mp4',
+            year: '2026',
+            genre: 'Romance / Narrative',
+            description: 'Golden hour romance visual narrative captured candidly.'
         },
         {
             title: '30 PERCENT',
             thumbnail: 'videos/30Percent_thumb.webp',
-            src: 'videos/30Percent.webp'
+            src: 'videos/30Percent.webp',
+            year: '2026',
+            genre: 'Commercial / Short',
+            description: 'Clean minimalist advertising sequence utilizing high contrast.'
         }
     ];
 
@@ -424,6 +501,7 @@ document.addEventListener('DOMContentLoaded', function() {
             posterElement.classList.add('loading');
             posterElement.src = thumbnailSrc;
             posterElement.style.opacity = '1';
+            posterElement.alt = `Film poster for ${films[index].title.trim()} by film director Jag Manalang`;
             
             const thumbnailTime = performance.now() - startTime;
             console.log(`🚀 INSTANT: Thumbnail displayed in ${thumbnailTime.toFixed(2)}ms for slide ${index + 1}`);
@@ -516,6 +594,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 posterElement.src = fullSrc;
             }
             posterElement.style.opacity = '1';
+            posterElement.alt = `Film poster for ${films[0].title.trim()} by film director Jag Manalang`;
             videoElement.classList.remove('playing');
 
             // Send custom event to Google Analytics for the initial slide view
@@ -714,11 +793,11 @@ document.addEventListener('DOMContentLoaded', function() {
             // Render card content
             card.innerHTML = `
                 <div class="film-card-image-wrapper">
-                    <img src="${film.thumbnail}" alt="${film.title}" loading="lazy">
+                    <img src="${film.thumbnail}" alt="${film.title.trim()}" loading="lazy">
                 </div>
                 <div class="film-card-info">
-                    <span class="film-card-year">2026</span>
-                    <h3 class="film-card-title">${film.title}</h3>
+                    <span class="film-card-year">${film.year || '2026'}</span>
+                    <h3 class="film-card-title">${film.title.trim()}</h3>
                 </div>
             `;
             

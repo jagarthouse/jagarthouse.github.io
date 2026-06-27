@@ -1,0 +1,31 @@
+# Allow all search engine and AI crawlers to index and reference the site for maximum outreach
+User-agent: *
+Allow: /
+
+# Directives for AI Agents & Search Bots
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+# Sitemap Location
+Sitemap: https://jagarthouse.com/sitemap.xml
