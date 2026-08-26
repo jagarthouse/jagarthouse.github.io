@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
         {
             title: 'KILLER SERVE',
             thumbnail: 'videos/KillerServe_thumb.webp',
-            src: 'videos/KillerServe.webp',
+            src: 'videos/killerserve.webp',
             year: '2026',
             genre: 'Commercial / Sports Film',
             description: 'High-energy sports commercial showcasing athletic action and precision.'
