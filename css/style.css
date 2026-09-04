@@ -921,6 +921,30 @@ footer {
     list-style: none;
 }
 
+.imdb-logo {
+    height: auto;
+    display: block;
+    color: currentColor;
+}
+
+.header-contact-link .imdb-logo {
+    width: 30px;
+}
+
+.imdb-logo rect {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+}
+
+.imdb-logo text {
+    fill: currentColor;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.7px;
+}
+
 .contact-socials {
     display: flex;
     gap: 3rem;
@@ -958,6 +982,10 @@ footer {
         gap: 1.5rem;
         flex-direction: column;
         padding-top: 2rem;
+    }
+
+    .header-contact-link .imdb-logo {
+        width: 26px;
     }
 }
 

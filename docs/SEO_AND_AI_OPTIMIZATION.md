@@ -1,103 +1,69 @@
-# Search & AI Engine Optimization Documentation
+# Search and LLM SEO
 
-This document explains the search engine optimization (SEO) and generative engine optimization (GEO) changes implemented to expand the digital outreach of the Jag Art House portfolio. It details the technical changes and provides a maintenance guide for adding future content.
+This site is a single-page portfolio for Jag 'Arthouse' Manalang. The optimization layer gives search engines and AI systems the same clear, factual description of his identity, locations, capabilities, work, and contact links.
 
----
+## Current implementation
 
-## 1. Overview of Optimizations
+### 1. Page and social metadata
 
-Visual portfolios (especially single-page, JavaScript-driven applications) present challenges for search crawlers and AI search tools (like Gemini, ChatGPT Search, Claude, and Perplexity). AI tools rely heavily on structured text to answer qualitative questions like *"What films has Jag Manalang directed?"* or *"What is the style of the film DIASPORA?"*.
+The `<head>` in [`index.html`](../index.html) includes:
 
-To maximize outreach, we implemented a multi-layered optimization strategy:
-1. **Search Indexing**: Created a dynamic sitemap.
-2. **Structured Metadata (Schema)**: Provided rich context about each project to AI knowledge bases.
-3. **Bot Scraper Fallbacks**: Exposed all film data in static HTML.
-4. **Accessibility & Visual Search**: Linked dynamic image alt attributes to the active slide.
+- A concise title focused on the name, Bay Area, Los Angeles, and cinematography.
+- A current meta description covering atmospheric films, music videos, commercials, and documentaries.
+- Author, robots, theme-color, canonical, and `rel="me"` identity links.
+- Open Graph and Twitter metadata with an accessible image description.
 
----
+### 2. Person and page identity schema
 
-## 2. Technical Implementations
+The JSON-LD graph in [`index.html`](../index.html) identifies:
 
-### A. XML Sitemap (`sitemap.xml`)
-We added a [sitemap.xml](file:///Users/kennethross/dev/portfolio_jag/sitemap.xml) to the project root, mapping the priority of the portfolio pages:
-- **Homepage (`/`)**: Set to priority `1.0` (crawled monthly).
-- **Business Card (`/business-card.html`)**: Set to priority `0.6` (crawled yearly).
+- Jag 'Arthouse' Manalang, Jag Manalang, and Jag Art House as the same person/brand context.
+- IMDb, Instagram, and YouTube profiles through `sameAs`.
+- Bay Area and Los Angeles work locations.
+- Cinematography, camera operation, 1st AC, drone piloting, lighting, and the listed camera systems through `knowsAbout`.
+- The homepage as a `WebPage` about the Person entity, with its primary portfolio image.
 
-This resolved the broken sitemap reference in the `robots.txt` file.
+Structured data is kept aligned with visible page content. Google recommends JSON-LD and requires structured data to represent the content users can see; validate changes with the [Rich Results Test](https://search.google.com/test/rich-results) and the [Schema Markup Validator](https://validator.schema.org/).
 
-### B. Structured Data Schema (`index.html`)
-The JSON-LD metadata block inside the `<head>` of [index.html](file:///Users/kennethross/dev/portfolio_jag/index.html) was upgraded. Each film is declared as a `CreativeWork` containing:
-- `genre`: Specific category (e.g. *Short Film*, *Music Video*, *Commercial / Narrative*).
-- `datePublished`: The year the piece was released.
-- `description`: A brief summary of the film's artistic focus.
+### 3. Portfolio context
 
-AI crawlers read this block directly to understand details about Jag Manalang's filmography.
+Each project is represented in the JSON-LD graph as a `CreativeWork` with a title, genre, year, description, creator, and crawlable thumbnail. The JavaScript film catalog in [`js/main.js`](../js/main.js) remains the source for the interactive portfolio.
 
-### C. Static Fallback List (`index.html`)
-Simple scrapers that do not run JavaScript would see an empty slideshow on the main site. To resolve this, we embedded a `<noscript>` container directly under the `<main>` tag containing a semantic list (`<ul>`) of all films:
-```html
-<noscript>
-    <section class="noscript-section">
-        <h2>Films Portfolio Directory</h2>
-        <ul>
-            <li><strong>DIASPORA (Short Film, 2026)</strong> - An atmospheric short film exploring displacement...</li>
-            ...
-        </ul>
-    </section>
-</noscript>
-```
-*Note: This section remains visually hidden to regular users with Javascript enabled, but is fully visible to bot scrapers.*
+The no-JavaScript fallback in [`index.html`](../index.html) exposes the filmmaker profile, capabilities, gear, IMDb link, and film directory as ordinary HTML text and links.
 
-### D. Dynamic Alt Attribute Updates (`js/main.js`)
-Previously, the primary slideshow poster image (`#film-poster`) had a static `alt="loading.."` tag. We updated the slideshow rendering in [js/main.js](file:///Users/kennethross/dev/portfolio_jag/js/main.js) to dynamically change the image's `alt` attribute during slide changes:
-```javascript
-posterElement.alt = `Film poster for ${films[index].title.trim()} by film director Jag Manalang`;
-```
-This enables search engines (like Google Image Search) to index the portfolio's visual stills correctly under their respective film titles.
+### 4. LLM-readable summary
 
-### E. Dynamic Catalog Grid Years (`js/main.js`)
-We changed the hardcoded year (`2026`) in the "All Films" card grid. It now dynamically reads the publication year from the `films` metadata array:
-```javascript
-<span class="film-card-year">${film.year || '2026'}</span>
-```
+[`llms.txt`](../llms.txt) provides a concise, human-readable reference for AI systems. It summarizes the person, locations, roles, gear, portfolio history, contact links, and filmography without adding claims that are not present on the site.
 
----
+This is an additional discovery aid, not a guaranteed ranking or answer mechanism. The visible site, canonical metadata, and structured data remain the primary sources of truth.
 
-## 3. How to Maintain and Add New Content
+### 5. Crawl and URL signals
 
-When adding a new project or updating an existing film, you must add it in **three places** to maintain complete SEO and AI crawl parity:
+- [`robots.txt`](../robots.txt) permits public crawling and points to the sitemap.
+- [`sitemap.xml`](../sitemap.xml) lists only the canonical homepage, because the portfolio views are hash-based sections rather than separate crawlable pages.
+- The homepage `lastmod` date should change only after a significant content, metadata, or structured-data update.
 
-### Step 1: Update the JavaScript Database
-Open [js/main.js](file:///Users/kennethross/dev/portfolio_jag/js/main.js) and add the new film object to the `films` array with `year`, `genre`, and `description` properties:
-```javascript
-{
-    title: 'NEW PROJECT NAME',
-    thumbnail: 'videos/your_thumbnail_thumb.webp',
-    src: 'videos/your_full_media.webp',
-    year: '2026',
-    genre: 'Short Film / Narrative',
-    description: 'A brief 1-2 sentence description of the project detailing style, story, or composition.'
-}
-```
+## Maintenance checklist
 
-### Step 2: Update the JSON-LD Schema
-Open [index.html](file:///Users/kennethross/dev/portfolio_jag/index.html), locate the `<script type="application/ld+json">` tag, and add a new item to the `@graph` array:
-```json
-{
-  "@type": "CreativeWork",
-  "name": "NEW PROJECT NAME",
-  "creator": {
-    "@id": "https://jagarthouse.com/#person"
-  },
-  "genre": "Short Film / Narrative",
-  "datePublished": "2026",
-  "description": "A brief 1-2 sentence description of the project detailing style, story, or composition.",
-  "thumbnailUrl": "https://jagarthouse.com/videos/your_thumbnail_thumb.webp"
-}
-```
+When adding or changing a project:
 
-### Step 3: Update the Noscript Fallback List
-Open [index.html](file:///Users/kennethross/dev/portfolio_jag/index.html), find the `<noscript>` tag, and append a list item inside the `<ul>` block:
-```html
-<li><strong>NEW PROJECT NAME (Short Film / Narrative, 2026)</strong> - A brief 1-2 sentence description of the project detailing style, story, or composition.</li>
-```
+1. Update the film object in [`js/main.js`](../js/main.js), including `title`, `thumbnail`, `src`, `year`, `genre`, and `description`.
+2. Update the matching `CreativeWork` in the JSON-LD graph in [`index.html`](../index.html).
+3. Update the no-JavaScript film list in [`index.html`](../index.html).
+4. Add or remove the asset with exact filename casing; GitHub Pages is case-sensitive even when local macOS development is not.
+5. Update [`llms.txt`](../llms.txt) when the person profile, capabilities, links, or filmography changes.
+6. Update the homepage `<lastmod>` in [`sitemap.xml`](../sitemap.xml) for significant changes.
+
+For identity changes, update the visible About Me copy, the Person JSON-LD, `rel="me"` links, `sameAs`, and `llms.txt` together. Keep descriptions specific, factual, and consistent across all four surfaces.
+
+## Deployment and monitoring
+
+After deployment, verify:
+
+- The canonical homepage returns successfully over HTTPS.
+- Metadata and JSON-LD are present in the served HTML, not only in local files.
+- Every structured-data image URL and portfolio thumbnail returns successfully.
+- IMDb, Instagram, YouTube, and contact navigation resolve.
+- The sitemap contains no deleted or redirected pages.
+
+Search engines may take days or weeks to recrawl and reprocess updated titles and structured data. Use Search Console URL Inspection to request a crawl after a major update.

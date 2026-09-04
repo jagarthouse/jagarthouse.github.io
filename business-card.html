@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="Business card directions for Jag Arthouse, a cinematographer based in the Bay Area and Los Angeles.">
+    <title>Jag Arthouse — Business Card Directions</title>
+    <style>
+        /* Hallmark · pre-emit critique: Philosophy 5 · Hierarchy 5 · Execution 5 · Specificity 5 · Restraint 5 · Variety 5 */
+        /* Hallmark · component: business-card set · genre: atmospheric · theme: Midnight
+         * states: default · hover · focus-visible · active · disabled · loading · error · success
+         */
+        @font-face {
+            font-family: 'BalboaExtraBlack';
+            src: url('fonts/Balboa_ExtraBlack.ttf') format('truetype');
+            font-weight: 900;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'BalboaExtraCondensed';
+            src: url('fonts/Balboa_ExtraCondensed.otf') format('opentype');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'SwissRegular';
+            src: url('fonts/Swiss_Regular.otf') format('opentype');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'HelveticaNeueLight';
+            src: url('fonts/HelveticaNeueLTW0545Light.otf') format('opentype');
+            font-weight: 300;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        :root {
+            --color-paper: oklch(15% 0 0);
+            --color-paper-raised: oklch(19% 0 0);
+            --color-paper-deep: oklch(11% 0 0);
+            --color-ink: oklch(95% 0 0);
+            --color-ink-dark: oklch(14% 0 0);
+            --color-muted: oklch(70% 0 0);
+            --color-rule: oklch(36% 0 0);
+            --color-accent: oklch(88% 0 0);
+            --color-focus: oklch(100% 0 0);
+            --color-bloom: oklch(100% 0 0 / 0.06);
+            --color-overlay: oklch(10% 0 0 / 0.78);
+            --color-overlay-soft: oklch(10% 0 0 / 0.28);
+            --color-overlay-clear: oklch(10% 0 0 / 0.04);
+            --color-qr-paper: oklch(100% 0 0);
+            --color-qr-ink: oklch(0% 0 0);
+
+            --font-display: 'BalboaExtraBlack', Impact, sans-serif;
+            --font-condensed: 'BalboaExtraCondensed', 'Arial Narrow', sans-serif;
+            --font-body: 'SwissRegular', 'Helvetica Neue', sans-serif;
+            --font-light: 'HelveticaNeueLight', 'Helvetica Neue', sans-serif;
+
+            --space-2xs: 0.25rem;
+            --space-xs: 0.5rem;
+            --space-sm: 0.75rem;
+            --space-md: 1rem;
+            --space-lg: 1.5rem;
+            --space-xl: 2.5rem;
+            --space-2xl: 4rem;
+
+            --radius-sm: 0.125rem;
+            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+            --dur-micro: 120ms;
+            --dur-short: 220ms;
+            --shadow-card: 0 1rem 2rem -1.5rem oklch(5% 0 0 / 0.8);
+            --z-base: 1;
+            --z-raised: 10;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            overflow-x: clip;
+        }
+
+        html {
+            background: var(--color-paper);
+            color-scheme: dark;
+        }
+
+        body {
+            min-height: 100dvh;
+            margin: 0;
+            background:
+                radial-gradient(circle at 84% 8%, var(--color-bloom), transparent 18rem),
+                var(--color-paper);
+            color: var(--color-ink);
+            font-family: var(--font-light);
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        .page-shell {
+            width: 100%;
+            max-width: 76rem;
+            margin-inline: auto;
+            padding: var(--space-2xl) clamp(var(--space-md), 5vw, var(--space-2xl)) var(--space-xl);
+        }
+
+        .page-header {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(12rem, 20rem);
+            gap: var(--space-xl);
+            align-items: end;
+            margin-bottom: var(--space-2xl);
+        }
+
+        .kicker,
+        .card-corner,
+        .card-role,
+        .contact-label,
+        .qr-label,
+        .page-footer {
+            font-family: var(--font-body);
+            font-size: 0.64rem;
+            letter-spacing: 0.14em;
+            line-height: 1.2;
+            text-transform: uppercase;
+        }
+
+        .kicker {
+            margin-bottom: var(--space-sm);
+            color: var(--color-accent);
+        }
+
+        h1 {
+            max-width: 8ch;
+            margin: 0;
+            color: var(--color-ink);
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            line-height: 0.82;
+            overflow-wrap: anywhere;
+        }
+
+        .header-note {
+            max-width: 28ch;
+            margin: 0;
+            color: var(--color-muted);
+            font-size: 1rem;
+            line-height: 1.55;
+        }
+
+        .concept-list {
+            display: grid;
+            gap: var(--space-2xl);
+        }
+
+        .concept {
+            display: grid;
+            gap: var(--space-md);
+        }
+
+        .concept-header {
+            display: flex;
+            justify-content: flex-start;
+            gap: var(--space-md);
+            align-items: baseline;
+            min-width: 0;
+        }
+
+        .concept-title {
+            margin: 0;
+            color: var(--color-ink);
+            font-family: var(--font-condensed);
+            font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+            font-weight: 400;
+            letter-spacing: 0.04em;
+            line-height: 1;
+            text-align: left;
+            text-transform: uppercase;
+            overflow-wrap: anywhere;
+        }
+
+        .card-pair {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: var(--space-lg);
+            align-items: start;
+        }
+
+        .card {
+            position: relative;
+            display: flex;
+            min-width: 0;
+            aspect-ratio: 7 / 4;
+            overflow: hidden;
+            isolation: isolate;
+            border: 1px solid var(--color-rule);
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow-card);
+        }
+
+        .card--front {
+            flex-direction: column;
+            justify-content: space-between;
+            padding: var(--space-lg);
+            background-color: var(--color-paper-deep);
+            background-position: center;
+            background-size: cover;
+        }
+
+        .card--front::after {
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            background: linear-gradient(112deg, var(--color-overlay) 0%, var(--color-overlay-soft) 58%, var(--color-overlay-clear) 100%);
+            content: "";
+        }
+
+        .card--diaspora {
+            background-image: url('videos/DIASPORA_shortfilm1.webp');
+        }
+
+        .card--killer {
+            background-image: url('videos/killerserve.webp');
+            background-position: center;
+        }
+
+        .card-corner {
+            position: relative;
+            z-index: var(--z-raised);
+            color: var(--color-ink);
+            white-space: nowrap;
+        }
+
+        .front-lockup {
+            position: relative;
+            z-index: var(--z-raised);
+            display: grid;
+            gap: var(--space-xs);
+            align-content: end;
+            min-width: 0;
+        }
+
+        .front-wordmark {
+            display: block;
+            color: var(--color-ink);
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 6vw, 4.5rem);
+            font-weight: 900;
+            letter-spacing: 0.01em;
+            line-height: 0.8;
+            white-space: nowrap;
+        }
+
+        .card-role {
+            color: var(--color-ink);
+            font-size: 0.6rem;
+            letter-spacing: 0.16em;
+            white-space: nowrap;
+        }
+
+        .front-credit {
+            position: relative;
+            z-index: var(--z-raised);
+            display: flex;
+            justify-content: space-between;
+            gap: var(--space-sm);
+            color: var(--color-ink);
+            font-family: var(--font-body);
+            font-size: 0.56rem;
+            letter-spacing: 0.12em;
+            line-height: 1.2;
+            text-transform: uppercase;
+        }
+
+        .front-credit span:last-child {
+            color: var(--color-accent);
+            text-align: right;
+        }
+
+        .card--back {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            grid-template-rows: auto minmax(0, 1fr) auto;
+            gap: var(--space-sm) var(--space-md);
+            padding: var(--space-lg);
+            background: var(--color-paper-raised);
+            color: var(--color-ink);
+        }
+
+        .back-heading {
+            grid-column: 1 / -1;
+            display: grid;
+            gap: var(--space-2xs);
+            min-width: 0;
+        }
+
+        .back-name {
+            color: var(--color-ink);
+            font-family: var(--font-condensed);
+            font-size: clamp(1.2rem, 2.4vw, 1.65rem);
+            font-weight: 400;
+            letter-spacing: 0.03em;
+            line-height: 0.92;
+            text-transform: uppercase;
+        }
+
+        .back-role {
+            color: var(--color-accent);
+            font-family: var(--font-body);
+            font-size: 0.54rem;
+            letter-spacing: 0.1em;
+            line-height: 1.25;
+            text-transform: uppercase;
+        }
+
+        .contact-stack {
+            display: grid;
+            align-content: end;
+            gap: var(--space-2xs);
+            min-width: 0;
+        }
+
+        .contact-line {
+            display: grid;
+            grid-template-columns: 2.25rem minmax(0, 1fr);
+            gap: var(--space-xs);
+            align-items: baseline;
+            min-width: 0;
+            font-size: 0.61rem;
+            line-height: 1.2;
+        }
+
+        .contact-label {
+            color: var(--color-muted);
+            font-size: 0.54rem;
+            letter-spacing: 0.1em;
+        }
+
+        .contact-line a {
+            min-width: 0;
+            overflow: hidden;
+            color: var(--color-ink);
+            text-decoration: none;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .contact-line a:hover {
+            color: var(--color-accent);
+        }
+
+        .contact-line a:focus-visible,
+        .qr-link:focus-visible {
+            outline: 2px solid var(--color-focus);
+            outline-offset: 3px;
+        }
+
+        .contact-line a:active,
+        .qr-link:active {
+            color: var(--color-accent);
+        }
+
+        .qr-link {
+            display: grid;
+            justify-items: center;
+            align-content: start;
+            align-self: end;
+            justify-self: end;
+            gap: var(--space-2xs);
+            width: clamp(4.5rem, 12vw, 5.25rem);
+            color: var(--color-ink);
+            text-decoration: none;
+        }
+
+        .qr-code {
+            display: block;
+            width: 100%;
+            height: auto;
+            aspect-ratio: 1;
+            background: var(--color-qr-paper);
+        }
+
+        .qr-label {
+            color: var(--color-muted);
+            font-size: 0.5rem;
+            letter-spacing: 0.1em;
+            white-space: nowrap;
+        }
+
+        .back-footer {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: space-between;
+            gap: var(--space-sm);
+            color: var(--color-muted);
+            font-family: var(--font-body);
+            font-size: 0.52rem;
+            letter-spacing: 0.12em;
+            line-height: 1.2;
+            text-transform: uppercase;
+        }
+
+        .back-footer span:last-child {
+            color: var(--color-accent);
+            text-align: right;
+        }
+
+        .page-footer {
+            display: flex;
+            justify-content: space-between;
+            gap: var(--space-md);
+            margin-top: var(--space-2xl);
+            padding-top: var(--space-md);
+            border-top: 1px solid var(--color-rule);
+            color: var(--color-muted);
+        }
+
+        .page-footer a {
+            color: var(--color-ink);
+            text-decoration: none;
+        }
+
+        .page-footer a:hover {
+            color: var(--color-accent);
+        }
+
+        .page-footer a:focus-visible {
+            outline: 2px solid var(--color-focus);
+            outline-offset: 3px;
+        }
+
+        .qr-defs {
+            position: absolute;
+            width: 0;
+            height: 0;
+            overflow: hidden;
+        }
+
+        @media (hover: hover) and (pointer: fine) {
+            .card {
+                transition: transform var(--dur-short) var(--ease-out);
+            }
+
+            .card:hover {
+                transform: translateY(-2px);
+            }
+        }
+
+        @media (max-width: 44rem) {
+            .page-shell {
+                padding-top: var(--space-xl);
+            }
+
+            .page-header {
+                grid-template-columns: 1fr;
+                gap: var(--space-lg);
+                margin-bottom: var(--space-xl);
+            }
+
+            h1 {
+                max-width: 7ch;
+            }
+
+            .concept-header {
+                align-items: start;
+                flex-direction: column;
+                gap: var(--space-xs);
+            }
+
+            .concept-title {
+                text-align: left;
+            }
+
+            .card-pair {
+                grid-template-columns: minmax(0, 1fr);
+            }
+        }
+
+        @media (max-width: 22rem) {
+            .page-shell {
+                padding-inline: var(--space-sm);
+            }
+
+            .card--front,
+            .card--back {
+                padding: var(--space-md);
+            }
+
+            .front-wordmark {
+                font-size: 2rem;
+            }
+
+            .back-name {
+                font-size: 1.15rem;
+            }
+
+            .contact-line {
+                font-size: 0.57rem;
+            }
+
+            .qr-code {
+                width: 3.55rem;
+            }
+
+            .qr-link {
+                width: 4.05rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 150ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 150ms !important;
+            }
+        }
+
+        @media print {
+            @page {
+                size: Letter;
+                margin: 0.5in;
+            }
+
+            html {
+                background: var(--color-qr-paper);
+            }
+
+            body {
+                min-height: auto;
+                background: var(--color-qr-paper);
+                color: var(--color-ink-dark);
+                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact;
+            }
+
+            .page-shell {
+                max-width: none;
+                padding: 0;
+            }
+
+            .page-header,
+            .page-footer,
+            .concept-header {
+                display: none;
+            }
+
+            .concept-list {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: var(--space-xl) var(--space-md);
+            }
+
+            .concept {
+                gap: 0;
+                break-inside: avoid;
+            }
+
+            .card-pair {
+                gap: var(--space-sm);
+            }
+
+            .card {
+                width: 3.5in;
+                box-shadow: none;
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <svg class="qr-defs" aria-hidden="true" focusable="false">
+        <defs>
+            <symbol id="jag-site-qr" viewBox="0 0 33 33">
+                <rect x="0" y="0" width="33" height="33" fill="var(--color-qr-paper)"></rect>
+                <g transform="translate(2 2)">
+                <path d="M0,0h1M1,0h1M2,0h1M3,0h1M4,0h1M5,0h1M6,0h1M9,0h1M10,0h1M11,0h1M12,0h1M14,0h1M15,0h1M18,0h1M19,0h1M22,0h1M23,0h1M24,0h1M25,0h1M26,0h1M27,0h1M28,0h1M0,1h1M6,1h1M9,1h1M12,1h1M13,1h1M14,1h1M15,1h1M18,1h1M22,1h1M28,1h1M0,2h1M2,2h1M3,2h1M4,2h1M6,2h1M10,2h1M11,2h1M15,2h1M16,2h1M18,2h1M19,2h1M20,2h1M22,2h1M24,2h1M25,2h1M26,2h1M28,2h1M0,3h1M2,3h1M3,3h1M4,3h1M6,3h1M12,3h1M17,3h1M19,3h1M22,3h1M24,3h1M25,3h1M26,3h1M28,3h1M0,4h1M2,4h1M3,4h1M4,4h1M6,4h1M8,4h1M11,4h1M13,4h1M15,4h1M19,4h1M22,4h1M24,4h1M25,4h1M26,4h1M28,4h1M0,5h1M6,5h1M10,5h1M14,5h1M15,5h1M16,5h1M17,5h1M18,5h1M19,5h1M20,5h1M22,5h1M28,5h1M0,6h1M1,6h1M2,6h1M3,6h1M4,6h1M5,6h1M6,6h1M8,6h1M10,6h1M12,6h1M14,6h1M16,6h1M18,6h1M20,6h1M22,6h1M23,6h1M24,6h1M25,6h1M26,6h1M27,6h1M28,6h1M8,7h1M9,7h1M14,7h1M17,7h1M18,7h1M20,7h1M2,8h1M3,8h1M6,8h1M7,8h1M8,8h1M11,8h1M13,8h1M14,8h1M15,8h1M16,8h1M19,8h1M21,8h1M22,8h1M24,8h1M0,9h1M1,9h1M2,9h1M5,9h1M8,9h1M9,9h1M10,9h1M13,9h1M16,9h1M17,9h1M18,9h1M19,9h1M20,9h1M21,9h1M22,9h1M23,9h1M24,9h1M25,9h1M28,9h1M0,10h1M1,10h1M2,10h1M6,10h1M10,10h1M11,10h1M12,10h1M13,10h1M14,10h1M15,10h1M18,10h1M22,10h1M24,10h1M26,10h1M27,10h1M2,11h1M7,11h1M10,11h1M13,11h1M15,11h1M20,11h1M28,11h1M1,12h1M2,12h1M3,12h1M4,12h1M6,12h1M8,12h1M12,12h1M13,12h1M14,12h1M16,12h1M19,12h1M21,12h1M23,12h1M26,12h1M27,12h1M28,12h1M1,13h1M7,13h1M8,13h1M10,13h1M11,13h1M14,13h1M15,13h1M18,13h1M19,13h1M22,13h1M23,13h1M25,13h1M26,13h1M27,13h1M28,13h1M2,14h1M3,14h1M5,14h1M6,14h1M7,14h1M10,14h1M12,14h1M13,14h1M15,14h1M16,14h1M17,14h1M19,14h1M21,14h1M22,14h1M23,14h1M24,14h1M25,14h1M27,14h1M28,14h1M3,15h1M8,15h1M12,15h1M13,15h1M16,15h1M17,15h1M19,15h1M24,15h1M25,15h1M27,15h1M28,15h1M2,16h1M3,16h1M6,16h1M7,16h1M10,16h1M12,16h1M13,16h1M18,16h1M19,16h1M20,16h1M24,16h1M25,16h1M1,17h1M5,17h1M7,17h1M8,17h1M9,17h1M14,17h1M15,17h1M17,17h1M18,17h1M20,17h1M23,17h1M25,17h1M26,17h1M0,18h1M2,18h1M6,18h1M8,18h1M9,18h1M15,18h1M17,18h1M20,18h1M22,18h1M23,18h1M24,18h1M2,19h1M7,19h1M8,19h1M9,19h1M10,19h1M12,19h1M13,19h1M15,19h1M18,19h1M19,19h1M20,19h1M21,19h1M22,19h1M25,19h1M26,19h1M1,20h1M3,20h1M4,20h1M5,20h1M6,20h1M8,20h1M10,20h1M14,20h1M16,20h1M17,20h1M18,20h1M19,20h1M20,20h1M21,20h1M22,20h1M23,20h1M24,20h1M25,20h1M26,20h1M8,21h1M9,21h1M10,21h1M13,21h1M20,21h1M24,21h1M25,21h1M28,21h1M0,22h1M1,22h1M2,22h1M3,22h1M4,22h1M5,22h1M6,22h1M8,22h1M9,22h1M11,22h1M15,22h1M19,22h1M20,22h1M22,22h1M24,22h1M26,22h1M27,22h1M0,23h1M6,23h1M10,23h1M11,23h1M13,23h1M14,23h1M17,23h1M20,23h1M24,23h1M27,23h1M28,23h1M0,24h1M2,24h1M3,24h1M4,24h1M6,24h1M11,24h1M12,24h1M15,24h1M17,24h1M18,24h1M20,24h1M21,24h1M22,24h1M23,24h1M24,24h1M25,24h1M26,24h1M27,24h1M0,25h1M2,25h1M3,25h1M4,25h1M6,25h1M8,25h1M12,25h1M14,25h1M15,25h1M16,25h1M19,25h1M24,25h1M25,25h1M27,25h1M0,26h1M2,26h1M3,26h1M4,26h1M6,26h1M8,26h1M13,26h1M14,26h1M17,26h1M20,26h1M23,26h1M26,26h1M28,26h1M0,27h1M6,27h1M10,27h1M11,27h1M14,27h1M15,27h1M16,27h1M18,27h1M20,27h1M22,27h1M24,27h1M25,27h1M27,27h1M0,28h1M1,28h1M2,28h1M3,28h1M4,28h1M5,28h1M6,28h1M12,28h1M13,28h1M18,28h1M19,28h1M20,28h1M22,28h1M23,28h1M25,28h1M27,28h1" fill="none" stroke="var(--color-qr-ink)" stroke-width="1" stroke-linecap="butt"></path>
+                </g>
+            </symbol>
+        </defs>
+    </svg>
+
+    <main class="page-shell">
+        <header class="page-header">
+            <div>
+            <p class="kicker">Jag Arthouse / business card</p>
+            <h1>JAGARTHOUSE</h1>
+        </div>
+            <p class="header-note">Two card directions that keep the still, the name, and the way back to the work in the same frame.</p>
+        </header>
+
+        <section class="concept-list" aria-label="Business card concepts">
+            <article class="concept">
+                <header class="concept-header">
+                    <h2 class="concept-title">Field still / quiet signal</h2>
+                </header>
+                <div class="card-pair">
+                    <div class="card card--front card--diaspora" aria-label="Front of the Field still business card">
+                        <span class="card-corner">Cinematographer / Bay Area — Los Angeles</span>
+                        <div class="front-lockup">
+                            <span class="front-wordmark">JAGARTHOUSE</span>
+                            <span class="card-role">Camera / lighting / visual story</span>
+                        </div>
+                        <div class="front-credit">
+                            <span>Jag Arthouse</span>
+                        </div>
+                    </div>
+                    <div class="card card--back" aria-label="Back of the Field still business card">
+                        <div class="back-heading">
+                            <span class="back-name">Jag Arthouse</span>
+                            <span class="back-role">Cinematographer · 1st AC · Camera Operator · Drone Pilot</span>
+                        </div>
+                        <div class="contact-stack">
+                            <div class="contact-line"><span class="contact-label">web</span><a href="https://jagarthouse.com/" target="_blank" rel="noopener noreferrer">jagarthouse.com</a></div>
+                            <div class="contact-line"><span class="contact-label">ig</span><a href="https://www.instagram.com/jagarthouse/" target="_blank" rel="noopener noreferrer">@jagarthouse</a></div>
+                            <div class="contact-line"><span class="contact-label">imdb</span><a href="https://www.imdb.com/name/nm18866816/?ref_=ext_shr_sms" target="_blank" rel="noopener noreferrer">nm18866816</a></div>
+                        </div>
+                        <a class="qr-link" href="https://jagarthouse.com/" target="_blank" rel="noopener noreferrer" aria-label="Scan to open jagarthouse.com">
+                            <svg class="qr-code" viewBox="0 0 33 33" role="img" aria-label="QR code for jagarthouse.com"><use href="#jag-site-qr"></use></svg>
+                            <span class="qr-label">Scan / site</span>
+                        </a>
+                        <div class="back-footer">
+                            <span>50+ releases</span>
+                            <span>Bay Area / Los Angeles</span>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <article class="concept">
+                <header class="concept-header">
+                    <h2 class="concept-title">Sports still / high contrast</h2>
+                </header>
+                <div class="card-pair">
+                    <div class="card card--front card--killer" aria-label="Front of the Sports still business card">
+                        <span class="card-corner">Cinematographer / Bay Area — Los Angeles</span>
+                        <div class="front-lockup">
+                            <span class="front-wordmark">JAGARTHOUSE</span>
+                            <span class="card-role">Narrative / commercial / documentary</span>
+                        </div>
+                        <div class="front-credit">
+                            <span>Jag Arthouse</span>
+                        </div>
+                    </div>
+                    <div class="card card--back" aria-label="Back of the Sports still business card">
+                        <div class="back-heading">
+                            <span class="back-name">Jag Arthouse</span>
+                            <span class="back-role">Cinematographer · 1st AC · Camera Operator · Drone Pilot</span>
+                        </div>
+                        <div class="contact-stack">
+                            <div class="contact-line"><span class="contact-label">web</span><a href="https://jagarthouse.com/" target="_blank" rel="noopener noreferrer">jagarthouse.com</a></div>
+                            <div class="contact-line"><span class="contact-label">ig</span><a href="https://www.instagram.com/jagarthouse/" target="_blank" rel="noopener noreferrer">@jagarthouse</a></div>
+                            <div class="contact-line"><span class="contact-label">imdb</span><a href="https://www.imdb.com/name/nm18866816/?ref_=ext_shr_sms" target="_blank" rel="noopener noreferrer">nm18866816</a></div>
+                        </div>
+                        <a class="qr-link" href="https://jagarthouse.com/" target="_blank" rel="noopener noreferrer" aria-label="Scan to open jagarthouse.com">
+                            <svg class="qr-code" viewBox="0 0 33 33" role="img" aria-label="QR code for jagarthouse.com"><use href="#jag-site-qr"></use></svg>
+                            <span class="qr-label">Scan / site</span>
+                        </a>
+                        <div class="back-footer">
+                            <span>50+ releases</span>
+                            <span>Bay Area / Los Angeles</span>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+        </section>
+
+        <footer class="page-footer">
+            <span>Existing stills / two options / one HTML file</span>
+            <a href="https://jagarthouse.com/" target="_blank" rel="noopener noreferrer">jagarthouse.com</a>
+        </footer>
+    </main>
+</body>
+</html>

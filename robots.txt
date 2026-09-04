@@ -1,4 +1,4 @@
-# Allow all search engine and AI crawlers to index and reference the site for maximum outreach
+# Public portfolio content is available to search engines and AI crawlers.
 User-agent: *
 Allow: /
 
@@ -29,3 +29,6 @@ Allow: /
 
 # Sitemap Location
 Sitemap: https://jagarthouse.com/sitemap.xml
+
+# Machine-readable site context
+# https://jagarthouse.com/llms.txt
