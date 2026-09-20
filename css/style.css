@@ -258,7 +258,7 @@ nav a:hover {
 
 .film-page-button {
     width: 36px;
-    height: 22px;
+    height: 14px;
     display: grid;
     place-items: center;
     border: 0;
@@ -279,7 +279,7 @@ nav a:hover {
     border-radius: 50%;
     background: currentColor;
     opacity: 0.45;
-    transition: opacity 0.2s ease, transform 0.2s ease;
+    transition: width 0.2s ease, height 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
 }
 
 .film-page-button:hover .film-page-dot,
@@ -289,14 +289,15 @@ nav a:hover {
 }
 
 .film-page-button.active .film-page-dot {
-    width: 8px;
-    height: 8px;
+    width: 3px;
+    height: 12px;
+    border-radius: 2px;
     opacity: 1;
     animation: film-dot-cue 0.55s ease-out;
 }
 
 @keyframes film-dot-cue {
-    from { transform: scale(0.6); }
+    from { transform: scaleY(0.6); }
     to { transform: scale(1); }
 }
 
