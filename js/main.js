@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Optional per-scene mobileOffsetX: horizontal framing shift in pixels; omitted means centered.
     const films = [
         {
             title: 'DIASPORA',
@@ -30,6 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
             src: 'videos/GirlsInLA.webp',
             year: '2026',
             genre: 'Music Video / Fashion Film',
+            mobileOffsetX: -300,
             description: 'A vibrant music video/fashion film exploring youth culture and pop color styles.'
         },
         {
@@ -55,6 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
             mp4: 'videos/CKK_party.mp4',
             year: '2026',
             genre: 'Event / Aftermovie',
+            mobileOffsetX: 60,
             description: 'High-energy event aftermovie capturing nighttime party vibes.'
         },
         {
@@ -64,6 +67,7 @@ document.addEventListener('DOMContentLoaded', function() {
             mp4: 'videos/untitled8.mp4',
             year: '2026',
             genre: 'Commercial / Narrative',
+            mobileOffsetX: -180,
             description: 'Emotive short commercial focusing on natural aesthetics and human emotion.'
         },
         {
@@ -72,6 +76,7 @@ document.addEventListener('DOMContentLoaded', function() {
             src: 'videos/untitled5.webp',
             year: '2026',
             genre: 'Experimental / Short Film',
+            mobileOffsetX: -150,
             description: 'A gritty, low-fidelity film study of urban isolation.'
         },
         {
@@ -80,6 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
             src: 'videos/Marado_BAD_mv1.webp',
             year: '2026',
             genre: 'Music Video',
+            mobileOffsetX: -220,
             description: 'Stylish music video using fast camera movements and choreography.'
         },
         {
@@ -96,6 +102,7 @@ document.addEventListener('DOMContentLoaded', function() {
             src: 'videos/DowninLA.webp',
             year: '2026',
             genre: 'Visual Poem',
+            mobileOffsetX: 100,
             description: 'A visual poem capturing architectural landscapes and warm tones in Los Angeles.'
         },
         {
@@ -113,6 +120,7 @@ document.addEventListener('DOMContentLoaded', function() {
             src: 'videos/Diaspora_Promo.webp',
             year: '2026',
             genre: 'Commercial / Architectural',
+            mobileOffsetX: 120,
             description: 'Real estate commercial showing interior design and fluid camera movement.'
         },
         {
@@ -129,6 +137,7 @@ document.addEventListener('DOMContentLoaded', function() {
             src: 'videos/Marado_MV_test.webp',
             year: '2026',
             genre: 'Behind the Scenes / Pre-visualization',
+            mobileOffsetX: 80,
             description: 'Behind-the-scenes layout planning and early visual concept tests.'
         },
         {
@@ -137,6 +146,7 @@ document.addEventListener('DOMContentLoaded', function() {
             src: 'videos/Diaspora_PreVis.webp',
             year: '2026',
             genre: 'Behind the Scenes / Pre-visualization',
+            mobileOffsetX: -100,
             description: 'Early shot-composition drafting and location test reel.'
         },
         {
@@ -145,6 +155,7 @@ document.addEventListener('DOMContentLoaded', function() {
             src: 'videos/SIMILIS.webp',
             year: '2026',
             genre: 'Short Film / Sci-Fi',
+            mobileOffsetX: 30,
             description: 'Moody science fiction short focusing on geometric patterns and reflection.'
         },
         {
@@ -169,6 +180,7 @@ document.addEventListener('DOMContentLoaded', function() {
             src: 'videos/untitled2.webp',
             year: '2026',
             genre: 'Visual Poem / Travel',
+            mobileOffsetX: 180,
             description: 'Clean landscape shots capturing coastal imagery and relaxation.'
         },
         {
@@ -177,6 +189,7 @@ document.addEventListener('DOMContentLoaded', function() {
             src: 'videos/untitled3.webp',
             year: '2026',
             genre: 'Music Video / Romance',
+            mobileOffsetX: 250,
             description: 'A narrative-focused music video showcasing romantic storytelling.'
         },
         {
@@ -185,6 +198,7 @@ document.addEventListener('DOMContentLoaded', function() {
             src: 'videos/untitled4.webp',
             year: '2026',
             genre: 'Portrait / Documentary',
+            mobileOffsetX: -100,
             description: 'Documentary interview exploring visual artwork design.'
         },
         {
@@ -193,6 +207,7 @@ document.addEventListener('DOMContentLoaded', function() {
             src: 'videos/BiggerProblems_TeYo2.webp',
             year: '2026',
             genre: 'Music Video / Narrative',
+            mobileOffsetX: 120,
             description: 'A narrative music video blending intimate performances with dramatic lighting.'
         },
         {
@@ -201,6 +216,7 @@ document.addEventListener('DOMContentLoaded', function() {
             src: 'videos/DIASPORA_shortfilm2.webp',
             year: '2026',
             genre: 'Short Film',
+            mobileOffsetX: 80,
             description: 'An atmospheric short film exploring displacement, identity, and personal heritage.'
         },
         {
@@ -209,6 +225,7 @@ document.addEventListener('DOMContentLoaded', function() {
             src: 'videos/DIASPORA_shortfilm3.webp',
             year: '2026',
             genre: 'Short Film',
+            mobileOffsetX: 20,
             description: 'An atmospheric short film exploring displacement, identity, and personal heritage.'
         },
         {
@@ -218,6 +235,7 @@ document.addEventListener('DOMContentLoaded', function() {
             mp4: 'videos/untitled6.mp4',
             year: '2026',
             genre: 'Romance / Narrative',
+            mobileOffsetX: -350,
             description: 'Golden hour romance visual narrative captured candidly.'
         },
         {
@@ -264,8 +282,93 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const posterElement = document.getElementById('film-poster');
     const videoElement = document.getElementById('film-video');
+    const videoContainer = document.querySelector('#projects-view .video-container');
+    const filmSnapTrack = document.getElementById('film-snap-track');
+    const filmPagination = document.getElementById('film-pagination');
     const filmContents = document.querySelectorAll('.film-content');
     let currentIndex = 0;
+    let previousPaginationIndex = null;
+
+    films.forEach((film, index) => {
+        const stop = document.createElement('div');
+        stop.className = 'film-snap-stop';
+        stop.setAttribute('role', 'group');
+        stop.setAttribute('aria-label', `Film ${index + 1} of ${films.length}: ${film.title.trim()}`);
+        filmSnapTrack.appendChild(stop);
+    });
+
+    function goToFilm(index) {
+        if (index < 0 || index >= films.length) return;
+        currentIndex = index;
+        updateContent(index);
+        filmSnapTrack.scrollTop = index * filmSnapTrack.clientHeight;
+    }
+
+    function applyMobileFraming(index) {
+        const offset = films[index].mobileOffsetX ?? 0;
+        videoContainer.style.setProperty('--mobile-scene-x', `${Number.isFinite(offset) ? offset : 0}px`);
+    }
+
+    function renderFilmPagination(index) {
+        const dots = [];
+        const previousDots = new Map();
+        const start = Math.max(0, index - 2);
+        const end = Math.min(films.length - 1, index + 2);
+
+        for (const button of filmPagination.children) {
+            previousDots.set(Number(button.dataset.page), {
+                button,
+                rect: button.getBoundingClientRect()
+            });
+            button.getAnimations().forEach(animation => animation.cancel());
+        }
+
+        for (let page = start; page <= end; page++) {
+            const existing = previousDots.get(page);
+            const button = existing ? existing.button : document.createElement('button');
+
+            if (!existing) {
+                const dot = document.createElement('span');
+                button.type = 'button';
+                button.className = 'film-page-button';
+                button.dataset.page = page;
+                button.setAttribute('aria-label', `Film ${page + 1} of ${films.length}: ${films[page].title.trim()}`);
+                button.addEventListener('click', () => {
+                    if (page === currentIndex) return;
+                    goToFilm(page);
+                });
+                dot.className = 'film-page-dot';
+                dot.setAttribute('aria-hidden', 'true');
+                button.appendChild(dot);
+            }
+
+            button.classList.toggle('active', page === index);
+            if (page === index) {
+                button.setAttribute('aria-current', 'page');
+            } else {
+                button.removeAttribute('aria-current');
+            }
+            dots.push(button);
+        }
+
+        filmPagination.replaceChildren(...dots);
+
+        if (previousPaginationIndex !== null && previousPaginationIndex !== index &&
+            !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            for (const button of dots) {
+                const oldRect = previousDots.get(Number(button.dataset.page))?.rect;
+                const newRect = button.getBoundingClientRect();
+                const from = oldRect
+                    ? { transform: `translate(${oldRect.left - newRect.left}px, ${oldRect.top - newRect.top}px)` }
+                    : { transform: `translateY(${index > previousPaginationIndex ? 8 : -8}px)`, opacity: 0 };
+                button.animate([from, { transform: 'translate(0, 0)', opacity: 1 }], {
+                    duration: 300,
+                    easing: 'cubic-bezier(0.22, 1, 0.36, 1)'
+                });
+            }
+        }
+        previousPaginationIndex = index;
+    }
     
     // Priority-based loading system
     const loadingQueue = {
@@ -468,6 +571,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Function to update content with thumbnail-first loading
     function updateContent(index) {
         const startTime = performance.now();
+        applyMobileFraming(index);
+        renderFilmPagination(index);
 
         // Remove active and next classes from all contents
         filmContents.forEach(content => {
@@ -579,6 +684,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initial load - show first thumbnail then full video/image
     function initialLoad() {
+        applyMobileFraming(0);
+        renderFilmPagination(0);
         const firstContent = filmContents[0];
         const thumbnailSrc = firstContent.dataset.thumbnail;
         const fullSrc = firstContent.dataset.src;
@@ -641,87 +748,152 @@ document.addEventListener('DOMContentLoaded', function() {
     
     initialLoad();
 
-    let isScrolling = false; // Global flag to control page transitions
-    let scrollCooldownTimeout = null; // Global timeout to manage cooldown
+    const scrollDebugEnabled = new URLSearchParams(window.location.search).get('scrollDebug') === '1';
+    const scrollTelemetry = [];
+    let scrollDebugPanel = null;
+    let scrollDebugCanvas = null;
+    let lastWheelAt = null;
+    let lastWheelMagnitude = 0;
+    let lastWheelSlope = 0;
 
-    // Handle scroll events (desktop)
-    window.addEventListener('wheel', function(e) {
-        const hash = window.location.hash || '#projects';
-        if (hash !== '#projects') {
-            return; // Allow natural scrolling
-        }
-        e.preventDefault();
-        
-        if (isScrolling) { return; } // If already scrolling, do nothing
+    if (scrollDebugEnabled) {
+        scrollDebugPanel = document.createElement('aside');
+        scrollDebugPanel.className = 'scroll-debug-panel';
+        scrollDebugPanel.setAttribute('aria-label', 'Scroll telemetry');
+        scrollDebugPanel.innerHTML = [
+            '<div class="scroll-debug-header"><span>SCROLL / DEBUG</span>',
+            '<button type="button" data-action="export">EXPORT</button>',
+            '<button type="button" data-action="clear">CLEAR</button></div>',
+            '<canvas width="320" height="90" aria-label="Recent signed wheel deltas"></canvas>',
+            '<div class="scroll-debug-values">Δ — · slope — · curvature —</div>',
+            '<div class="scroll-debug-state">native snap · film ' + (currentIndex + 1) + '</div>',
+            '<div class="scroll-debug-decision">Waiting for wheel input</div>'
+        ].join('');
+        document.body.appendChild(scrollDebugPanel);
+        scrollDebugCanvas = scrollDebugPanel.querySelector('canvas');
+        window.__scrollTelemetry = scrollTelemetry;
 
-        isScrolling = true; // Lock scrolling immediately
+        scrollDebugPanel.querySelector('[data-action="clear"]').addEventListener('click', () => {
+            scrollTelemetry.length = 0;
+            lastWheelAt = null;
+            lastWheelMagnitude = 0;
+            lastWheelSlope = 0;
+            drawScrollTelemetry();
+            scrollDebugPanel.querySelector('.scroll-debug-values').textContent = 'Δ — · slope — · curvature —';
+            scrollDebugPanel.querySelector('.scroll-debug-state').textContent = 'native snap · film ' + (currentIndex + 1);
+            scrollDebugPanel.querySelector('.scroll-debug-decision').textContent = 'Trace cleared';
+        });
+        scrollDebugPanel.querySelector('[data-action="export"]').addEventListener('click', () => {
+            const blob = new Blob([JSON.stringify(scrollTelemetry, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'scroll-telemetry.json';
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+        });
+    }
 
-        if (e.deltaY > 0 && currentIndex < filmContents.length - 1) {
-            // Scrolling down
-            currentIndex++;
-            updateContent(currentIndex);
-        } else if (e.deltaY < 0 && currentIndex > 0) {
-            // Scrolling up
-            currentIndex--;
-            updateContent(currentIndex);
-        }
-        
-        // Set a cooldown period after the scroll action is processed
-        clearTimeout(scrollCooldownTimeout);
-        scrollCooldownTimeout = setTimeout(() => {
-            isScrolling = false; // Re-enable scrolling after cooldown
-        }, 800); // This duration should be slightly longer than your page transition animation
-    }, { passive: false });
+    function drawScrollTelemetry() {
+        if (!scrollDebugCanvas) return;
+        const ctx = scrollDebugCanvas.getContext('2d');
+        const width = scrollDebugCanvas.width;
+        const height = scrollDebugCanvas.height;
+        const recent = scrollTelemetry.filter(event => event.source === 'wheel').slice(-60);
+        const maxDelta = Math.max(24, ...recent.map(event => Math.abs(event.delta)));
+        ctx.clearRect(0, 0, width, height);
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
+        ctx.beginPath();
+        ctx.moveTo(0, height / 2);
+        ctx.lineTo(width, height / 2);
+        ctx.stroke();
+        if (!recent.length) return;
+        ctx.strokeStyle = '#d0d0d0';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        recent.forEach((event, index) => {
+            const x = (index / Math.max(1, recent.length - 1)) * width;
+            const y = height / 2 - (event.delta / maxDelta) * (height / 2 - 7);
+            if (index === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+        });
+        ctx.stroke();
+    }
 
-    // Handle touch events (mobile)
-    let touchStartY = 0;
-    let touchEndY = 0;
-    
-    window.addEventListener('touchstart', function(e) {
-        touchStartY = e.touches[0].clientY;
+    function recordScrollTelemetry(event) {
+        if (!scrollDebugEnabled) return;
+        scrollTelemetry.push(event);
+        if (scrollTelemetry.length > 1000) scrollTelemetry.shift();
+        scrollDebugPanel.querySelector('.scroll-debug-values').textContent =
+            'Δ ' + event.delta + ' · slope ' + event.slopePerMs + '/ms · curvature ' + event.curvaturePerMs2 + '/ms²';
+        scrollDebugPanel.querySelector('.scroll-debug-state').textContent =
+            'native snap · film ' + event.film + ' · scroll ' + Math.round(event.scrollTop) + 'px';
+        scrollDebugPanel.querySelector('.scroll-debug-decision').textContent =
+            event.decision + ' · ' + scrollTelemetry.length + ' events';
+        drawScrollTelemetry();
+    }
+
+    filmSnapTrack.addEventListener('scroll', () => {
+        const height = filmSnapTrack.clientHeight;
+        if (!height) return;
+        const nextIndex = Math.max(0, Math.min(films.length - 1, Math.round(filmSnapTrack.scrollTop / height)));
+        if (nextIndex === currentIndex) return;
+        currentIndex = nextIndex;
+        updateContent(nextIndex);
+        recordScrollTelemetry({
+            timeMs: Math.round(performance.now()),
+            source: 'snap',
+            rawDeltaY: null,
+            deltaMode: null,
+            delta: 0,
+            slopePerMs: 0,
+            curvaturePerMs2: 0,
+            scrollTop: filmSnapTrack.scrollTop,
+            film: currentIndex + 1,
+            decision: 'snap-change'
+        });
     }, { passive: true });
-    
-    window.addEventListener('touchend', function(e) {
-        const hash = window.location.hash || '#projects';
-        if (hash !== '#projects') {
-            return; // Allow natural swipe scrolling
-        }
-        
-        touchEndY = e.changedTouches[0].clientY;
-        
-        if (isScrolling) { return; } // If already scrolling, do nothing
-        isScrolling = true; // Lock scrolling immediately for touch
 
-        const swipeThreshold = 50; // Minimum swipe distance
-        const swipeDistance = touchStartY - touchEndY;
-        
-        if (Math.abs(swipeDistance) > swipeThreshold) {
-            if (swipeDistance > 0 && currentIndex < filmContents.length - 1) {
-                // Swipe up (next)
-                currentIndex++;
-                updateContent(currentIndex);
-            } else if (swipeDistance < 0 && currentIndex > 0) {
-                // Swipe down (previous)
-                currentIndex--;
-                updateContent(currentIndex);
-            }
-        }
+    if (scrollDebugEnabled) {
+        filmSnapTrack.addEventListener('wheel', e => {
+            const now = performance.now();
+            const delta = e.deltaY * (e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? window.innerHeight : 1);
+            const magnitude = Math.abs(delta);
+            const gap = lastWheelAt === null ? null : now - lastWheelAt;
+            const contiguous = gap !== null && gap < 250;
+            const slope = contiguous ? (magnitude - lastWheelMagnitude) / Math.max(1, gap) : 0;
+            const curvature = contiguous ? (slope - lastWheelSlope) / Math.max(1, gap) : 0;
+            lastWheelAt = now;
+            lastWheelMagnitude = magnitude;
+            lastWheelSlope = slope;
+            recordScrollTelemetry({
+                timeMs: Math.round(now),
+                gapMs: gap === null ? null : Math.round(gap),
+                source: 'wheel',
+                rawDeltaY: e.deltaY,
+                deltaMode: e.deltaMode,
+                delta: Number(delta.toFixed(2)),
+                slopePerMs: Number(slope.toFixed(3)),
+                curvaturePerMs2: Number(curvature.toFixed(4)),
+                scrollTop: filmSnapTrack.scrollTop,
+                film: currentIndex + 1,
+                decision: 'native-scroll'
+            });
+        }, { passive: true });
+    }
 
-        // Set a cooldown period after the swipe action is processed
-        clearTimeout(scrollCooldownTimeout);
-        scrollCooldownTimeout = setTimeout(() => {
-            isScrolling = false; // Re-enable scrolling after cooldown
-        }, 800); // This duration should be slightly longer than your page transition animation
-    }, { passive: true });
+    window.addEventListener('resize', () => {
+        filmSnapTrack.scrollTop = currentIndex * filmSnapTrack.clientHeight;
+    });
 
-    // Handle scroll behavior (prevent default scroll on slideshow, and animate header on scrollable sub-pages)
-    window.addEventListener('scroll', function(e) {
+    // Keep the header visible over films; other pages scroll normally.
+    window.addEventListener('scroll', function() {
         const hash = window.location.hash || '#projects';
         const header = document.querySelector('header');
         
         if (hash === '#projects') {
-            e.preventDefault();
-            window.scrollTo(0, 0);
             if (header) {
                 header.classList.remove('hidden');
             }
@@ -734,7 +906,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
         }
-    }, { passive: false });
+    }, { passive: true });
 
     // Menu Drawer Toggle Logic
     const toggleButton = document.getElementById('menu-toggle');
@@ -804,8 +976,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Navigate to projects view on click, and activate this specific film
             card.addEventListener('click', (e) => {
                 e.preventDefault();
-                currentIndex = film.originalIndex;
-                updateContent(currentIndex);
+                goToFilm(film.originalIndex);
                 window.location.hash = '#projects';
             });
             
@@ -848,6 +1019,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             const projectsView = document.getElementById('projects-view');
             if (projectsView) projectsView.classList.add('active');
+            filmSnapTrack.scrollTop = currentIndex * filmSnapTrack.clientHeight;
             // Resume video playback for current slide
             if (videoElement && videoElement.classList.contains('playing')) {
                 videoElement.play().catch(e => console.warn(e));
