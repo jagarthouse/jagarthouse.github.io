@@ -409,6 +409,7 @@ body.projects-active .scroll-debug-panel {
     font-family: 'BalboaExtraBlack', Impact, sans-serif;
     font-size: clamp(3rem, 5.5vw, 6rem);
     font-weight: 900;
+    line-height: 0.9;
     margin-bottom: 0.5rem;
     letter-spacing: 4px;
     opacity: 0;

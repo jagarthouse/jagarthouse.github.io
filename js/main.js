@@ -132,24 +132,6 @@ document.addEventListener('DOMContentLoaded', function() {
             description: 'Nostalgic retrospective styled with classic vintage color grading.'
         },
         {
-            title: 'MARADO PreVis',
-            thumbnail: 'videos/Marado_MV_test_thumb.webp',
-            src: 'videos/Marado_MV_test.webp',
-            year: '2026',
-            genre: 'Behind the Scenes / Pre-visualization',
-            mobileOffsetX: 80,
-            description: 'Behind-the-scenes layout planning and early visual concept tests.'
-        },
-        {
-            title: 'DIASPORA PreVis',
-            thumbnail: 'videos/Diaspora_PreVis_thumb.webp',
-            src: 'videos/Diaspora_PreVis.webp',
-            year: '2026',
-            genre: 'Behind the Scenes / Pre-visualization',
-            mobileOffsetX: -100,
-            description: 'Early shot-composition drafting and location test reel.'
-        },
-        {
             title: 'SIMILIS',
             thumbnail: 'videos/SIMILIS_thumb.webp',
             src: 'videos/SIMILIS.webp',
@@ -229,22 +211,22 @@ document.addEventListener('DOMContentLoaded', function() {
             description: 'An atmospheric short film exploring displacement, identity, and personal heritage.'
         },
         {
-            title: 'LOVE STORY ON THE PIER',
-            thumbnail: 'videos/untitled6.webp',
-            src: 'videos/untitled6.webm',
-            mp4: 'videos/untitled6.mp4',
+            title: 'MARADO PreVis',
+            thumbnail: 'videos/Marado_MV_test_thumb.webp',
+            src: 'videos/Marado_MV_test.webp',
             year: '2026',
-            genre: 'Romance / Narrative',
-            mobileOffsetX: -350,
-            description: 'Golden hour romance visual narrative captured candidly.'
+            genre: 'Behind the Scenes / Pre-visualization',
+            mobileOffsetX: 80,
+            description: 'Behind-the-scenes layout planning and early visual concept tests.'
         },
         {
-            title: '30 PERCENT',
-            thumbnail: 'videos/30Percent_thumb.webp',
-            src: 'videos/30Percent.webp',
+            title: 'DIASPORA PreVis',
+            thumbnail: 'videos/Diaspora_PreVis_thumb.webp',
+            src: 'videos/Diaspora_PreVis.webp',
             year: '2026',
-            genre: 'Commercial / Short',
-            description: 'Clean minimalist advertising sequence utilizing high contrast.'
+            genre: 'Behind the Scenes / Pre-visualization',
+            mobileOffsetX: -100,
+            description: 'Early shot-composition drafting and location test reel.'
         }
     ];
 
@@ -954,7 +936,12 @@ document.addEventListener('DOMContentLoaded', function() {
         let filmsToRender = [...films].map((film, index) => ({...film, originalIndex: index}));
         
         if (currentSort === 'alphabetical') {
-            filmsToRender.sort((a, b) => a.title.localeCompare(b.title));
+            filmsToRender.sort((a, b) => {
+                const aIsPrevis = /pre.?vis/i.test(a.title.trim());
+                const bIsPrevis = /pre.?vis/i.test(b.title.trim());
+                if (aIsPrevis !== bIsPrevis) return aIsPrevis ? 1 : -1;
+                return a.title.localeCompare(b.title);
+            });
         }
         
         filmsToRender.forEach((film) => {
