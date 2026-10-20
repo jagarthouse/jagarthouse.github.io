@@ -817,10 +817,37 @@ document.addEventListener('DOMContentLoaded', function() {
         drawScrollTelemetry();
     }
 
+    const headerElement = document.querySelector('header');
+    const menuToggleButton = document.getElementById('menu-toggle');
+    let navigationShouldHide = false;
+    let previousFilmScrollTop = filmSnapTrack.scrollTop;
+    let previousWindowScrollY = window.scrollY;
+
+    function setNavigationHidden(hidden) {
+        navigationShouldHide = hidden;
+        if (headerElement) headerElement.classList.toggle('hidden', hidden);
+
+        if (menuToggleButton) {
+            const hideMenuButton = hidden && !menuToggleButton.classList.contains('active');
+            menuToggleButton.classList.toggle('hidden', hideMenuButton);
+            menuToggleButton.setAttribute('aria-hidden', String(hideMenuButton));
+            menuToggleButton.tabIndex = hideMenuButton ? -1 : 0;
+        }
+    }
+
     filmSnapTrack.addEventListener('scroll', () => {
+        const scrollTop = filmSnapTrack.scrollTop;
+        const scrollDirection = scrollTop - previousFilmScrollTop;
+        if (scrollTop <= 1 || scrollDirection < -1) {
+            setNavigationHidden(false);
+        } else if (scrollDirection > 1) {
+            setNavigationHidden(true);
+        }
+        previousFilmScrollTop = scrollTop;
+
         const height = filmSnapTrack.clientHeight;
         if (!height) return;
-        const nextIndex = Math.max(0, Math.min(films.length - 1, Math.round(filmSnapTrack.scrollTop / height)));
+        const nextIndex = Math.max(0, Math.min(films.length - 1, Math.round(scrollTop / height)));
         if (nextIndex === currentIndex) return;
         currentIndex = nextIndex;
         updateContent(nextIndex);
@@ -867,26 +894,23 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     window.addEventListener('resize', () => {
-        filmSnapTrack.scrollTop = currentIndex * filmSnapTrack.clientHeight;
+        const scrollTop = currentIndex * filmSnapTrack.clientHeight;
+        filmSnapTrack.scrollTop = scrollTop;
+        previousFilmScrollTop = scrollTop;
     });
 
-    // Keep the header visible over films; other pages scroll normally.
+    // Hide the header and menu while scrolling down; reveal them when scrolling up.
     window.addEventListener('scroll', function() {
         const hash = window.location.hash || '#projects';
-        const header = document.querySelector('header');
-        
-        if (hash === '#projects') {
-            if (header) {
-                header.classList.remove('hidden');
-            }
-        } else {
-            if (header) {
-                if (window.scrollY > 20) {
-                    header.classList.add('hidden');
-                } else {
-                    header.classList.remove('hidden');
-                }
-            }
+        const scrollY = window.scrollY;
+        const scrollDirection = scrollY - previousWindowScrollY;
+        previousWindowScrollY = scrollY;
+
+        if (hash === '#projects') return;
+        if (scrollY <= 20 || scrollDirection < -1) {
+            setNavigationHidden(false);
+        } else if (scrollDirection > 1) {
+            setNavigationHidden(true);
         }
     }, { passive: true });
 
@@ -899,6 +923,7 @@ document.addEventListener('DOMContentLoaded', function() {
         toggleButton.addEventListener('click', () => {
             const isOpen = drawer.classList.toggle('open');
             toggleButton.classList.toggle('active');
+            setNavigationHidden(navigationShouldHide);
             
             // Staggered cross-fade for the label text
             label.style.opacity = '0';
@@ -991,11 +1016,10 @@ document.addEventListener('DOMContentLoaded', function() {
             view.classList.remove('active');
         });
         
-        // Reset header hidden state on route change
-        const header = document.querySelector('header');
-        if (header) {
-            header.classList.remove('hidden');
-        }
+        // Reset navigation visibility and direction baselines on route change
+        setNavigationHidden(false);
+        previousWindowScrollY = 0;
+        previousFilmScrollTop = filmSnapTrack.scrollTop;
         
         // Scroll to top of the document
         window.scrollTo(0, 0);
@@ -1007,6 +1031,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const projectsView = document.getElementById('projects-view');
             if (projectsView) projectsView.classList.add('active');
             filmSnapTrack.scrollTop = currentIndex * filmSnapTrack.clientHeight;
+            previousFilmScrollTop = filmSnapTrack.scrollTop;
             // Resume video playback for current slide
             if (videoElement && videoElement.classList.contains('playing')) {
                 videoElement.play().catch(e => console.warn(e));
